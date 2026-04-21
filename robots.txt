@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://qingning-tech.github.io/industry-news/sitemap.xml
