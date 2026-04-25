@@ -3,228 +3,577 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>行业信息聚合平台 - 2026年04月25日</title>
-    <meta name="description" content="AI驱动的多行业信息聚合，每日更新最新行业动态">
-    <link rel="stylesheet" href="css/style.css">
+    <title>行业信息聚合平台</title>
+    <meta name="description" content="世界地图 + AI行业新闻聚合">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #0f1923;
+            color: #e0e0e0;
+            overflow-x: hidden;
+        }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 20px; }
+
+        /* 头部 */
+        header {
+            background: rgba(15,25,35,0.95);
+            backdrop-filter: blur(10px);
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo h1 {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 700;
+        }
+        .logo h1 span { color: #4fc3f7; }
+        .logo .tagline { font-size: 0.75rem; color: #7f8c8d; margin-top: 2px; }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+        .hero h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; }
+        .hero h1 span { color: #4fc3f7; }
+        .hero p { color: #95a5a6; font-size: 1rem; }
+
+        /* 搜索 */
+        .search-bar {
+            max-width: 500px;
+            margin: 18px auto 0;
+            display: flex;
+            gap: 8px;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .search-bar input:focus { border-color: #4fc3f7; }
+        .search-bar input::placeholder { color: #555; }
+        .search-bar button {
+            padding: 10px 20px;
+            background: #4fc3f7;
+            color: #0f1923;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-bar button:hover { background: #29b6f6; }
+
+        /* 地图容器 */
+        .map-wrap {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0 30px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+        #worldmap { width: 100%; height: auto; display: block; cursor: pointer; }
+        #worldmap path {
+            stroke: #1a2a3a;
+            stroke-width: 0.6;
+            transition: fill 0.2s ease, stroke 0.2s;
+        }
+        #worldmap path:hover { opacity: 0.8; stroke: #4fc3f7; stroke-width: 1.2; }
+
+        .loading-map {
+            text-align: center;
+            padding: 80px 0;
+            color: #555;
+        }
+        .loading-map i { font-size: 2.5rem; margin-bottom: 15px; animation: spin 1s linear infinite; display: block; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== 弹窗 ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.65);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-overlay.active { display: flex; }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+        .modal-box {
+            background: #1a2a3a;
+            border-radius: 16px;
+            width: 92%;
+            max-width: 680px;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity:0; }
+            to { transform: translateY(0); opacity:1; }
+        }
+        .modal-box::-webkit-scrollbar { width: 6px; }
+        .modal-box::-webkit-scrollbar-track { background: transparent; }
+        .modal-box::-webkit-scrollbar-thumb { background: #2c3e50; border-radius: 3px; }
+
+        .modal-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 25px 0;
+        }
+        .modal-head h2 {
+            font-size: 1.5rem;
+            display: flex; align-items: center; gap: 10px;
+            color: #fff;
+        }
+        .modal-head .close-btn {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.08);
+            color: #aaa;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .modal-head .close-btn:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+        .modal-sub {
+            padding: 4px 25px 16px;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .modal-body { padding: 20px 25px 25px; }
+
+        /* 基本信息网格 */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .info-item {
+            background: rgba(255,255,255,0.04);
+            padding: 12px 14px;
+            border-radius: 8px;
+            border-left: 3px solid #4fc3f7;
+        }
+        .info-item .lbl { font-size: 0.75rem; color: #7f8c8d; margin-bottom: 3px; }
+        .info-item .val { font-size: 0.95rem; font-weight: 600; color: #e0e0e0; }
+
+        /* 新闻区块标题 */
+        .news-section-title {
+            font-size: 1rem;
+            color: #4fc3f7;
+            margin: 20px 0 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .news-section-title i { font-size: 0.9rem; }
+
+        /* 新闻列表 */
+        .country-news-list { display: flex; flex-direction: column; gap: 10px; }
+        .country-news-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 14px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .country-news-item:hover { background: rgba(255,255,255,0.06); }
+        .country-news-item a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .country-news-item a:hover { color: #4fc3f7; }
+        .country-news-item .meta {
+            font-size: 0.75rem;
+            color: #7f8c8d;
+            display: flex; gap: 12px;
+        }
+        .country-news-empty {
+            text-align: center; padding: 20px; color: #555;
+        }
+
+        /* 弹窗加载/错误 */
+        .modal-loading { text-align: center; padding: 40px; color: #7f8c8d; }
+        .modal-loading i { font-size: 1.8rem; margin-bottom: 10px; animation: spin 1s linear infinite; display: block; }
+        .modal-error { text-align: center; padding: 40px; color: #e74c3c; }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.5rem; }
+            .modal-head h2 { font-size: 1.2rem; }
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <h1><i class="fas fa-newspaper"></i> 行业信息聚合平台</h1>
-                <p class="tagline">AI驱动的多行业信息聚合，每日更新最新行业动态</p>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> 首页</a></li>
-                    <li><a href="ai.html">🤖 人工智能</a></li><li><a href="electricity.html">⚡ 电力能源</a></li><li><a href="ecommerce.html">🛒 电子商务</a></li>
-                    <li><a href="worldmap.html">🌍 世界地图</a></li>
-                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
-                </ul>
-            </nav>
+
+<header>
+    <div class="container">
+        <div class="logo">
+            <h1>🌍 <span>行业信息</span>聚合平台</h1>
+            <p class="tagline">AI驱动 · 每日更新 · 全球视野</p>
         </div>
-    </header>
+    </div>
+</header>
 
-    <main class="container">
-        <section class="hero">
-            <div class="hero-content">
-                <h2>每日行业动态汇总</h2>
-                <p class="date"><i class="far fa-calendar-alt"></i> 更新日期：2026年04月25日</p>
-                <p class="stats"><i class="fas fa-chart-line"></i> 今日收录 8 条行业新闻</p>
-            </div>
-        </section>
-
-        <section class="hot-news">
-            <h2><i class="fas fa-fire"></i> 今日热点新闻</h2>
-            <div class="hot-news-grid">
-                
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://www.theverge.com" target="_blank">OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程</a></h3>
-                <p class="hot-summary">OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。在编码调试、在线研究、跨工具工作等任务上表现突出，使用更少的token即可完成任务。即日起向Plus/Pro/企业用户推送。...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> The Verge / VentureBeat</span>
-                </div>
-            </div>
-            
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://venturebeat.com" target="_blank">OpenAI 推出 Workspace Agents 企业级 AI 代理平台</a></h3>
-                <p class="hot-summary">作为Custom GPT的继任者，Workspace Agents可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，基于Codex引擎驱动，支持长时间自主运行、...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> VentureBeat</span>
-                </div>
-            </div>
-            
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://www.bloomberg.com" target="_blank">Google 豪掷 400 亿美元布局 Anthropic</a></h3>
-                <p class="hot-summary">Google先投100亿，达标后追加至400亿。此前Amazon已投80亿，本周再投50亿并承诺未来可追加200亿。AI军备竞赛全面白热化。...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> Bloomberg / The Verge</span>
-                </div>
-            </div>
-            
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://venturebeat.com" target="_blank">Google Gemini 可部署到完全离线环境</a></h3>
-                <p class="hot-summary">Cirrascale推出Gemini本地部署方案：Dell硬件+8块NVIDIA GPU，完全断网运行。数据不经过Google基础设施，适合金融、医疗、国防等高度监管行业。...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> VentureBeat</span>
-                </div>
-            </div>
-            
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://venturebeat.com" target="_blank">Google vs AWS：AI 代理架构两派分化</a></h3>
-                <p class="hot-summary">Google走Kubernetes控制面板路线，注重治理和安全；AWS通过Bedrock AgentCore优化执行速度，让代理快速上线。一个管编排，一个管执行。...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> VentureBeat</span>
-                </div>
-            </div>
-            
-            <div class="hot-news-card" style="border-top: 3px solid #4CAF50;">
-                <div class="hot-news-header">
-                    <span class="industry-tag" style="background: #4CAF5022; color: #4CAF50;">
-                        🤖 人工智能
-                    </span>
-                    <span class="hot-index"><i class="fas fa-fire"></i> 热点</span>
-                </div>
-                <h3><a href="https://www.bloomberg.com" target="_blank">DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法</a></h3>
-                <p class="hot-summary">司法部认为该法要求开发者采取合理注意防止算法歧视违反宪法平等保护条款。原定6月30日生效。...</p>
-                <div class="hot-meta">
-                    <span class="source"><i class="fas fa-newspaper"></i> Bloomberg / The Verge</span>
-                </div>
-            </div>
-            
-            </div>
-        </section>
-
-        <section class="industries">
-            <h2><i class="fas fa-industry"></i> 行业分类</h2>
-            <div class="industry-grid">
-                
-            <div class="industry-card" style="border-left: 5px solid #4CAF50;">
-                <div class="industry-header">
-                    <span class="industry-icon">🤖</span>
-                    <h3>人工智能</h3>
-                    <span class="news-count">8条新闻</span>
-                </div>
-                <p class="industry-desc">Artificial Intelligence</p>
-                <div class="industry-news-preview">
-                    <div class="preview-item"><i class="fas fa-chevron-right"></i> OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程</div><div class="preview-item"><i class="fas fa-chevron-right"></i> OpenAI 推出 Workspace Agents 企业级...</div><div class="preview-item"><i class="fas fa-chevron-right"></i> Google 豪掷 400 亿美元布局 Anthropic</div>
-                </div>
-                <a href="ai.html" class="view-more">查看全部新闻 →</a>
-            </div>
-            
-            <div class="industry-card" style="border-left: 5px solid #2196F3;">
-                <div class="industry-header">
-                    <span class="industry-icon">⚡</span>
-                    <h3>电力能源</h3>
-                    <span class="news-count">0条新闻</span>
-                </div>
-                <p class="industry-desc">Electric Power & Energy</p>
-                <div class="industry-news-preview">
-                    
-                </div>
-                <a href="electricity.html" class="view-more">查看全部新闻 →</a>
-            </div>
-            
-            <div class="industry-card" style="border-left: 5px solid #FF9800;">
-                <div class="industry-header">
-                    <span class="industry-icon">🛒</span>
-                    <h3>电子商务</h3>
-                    <span class="news-count">0条新闻</span>
-                </div>
-                <p class="industry-desc">E-commerce</p>
-                <div class="industry-news-preview">
-                    
-                </div>
-                <a href="ecommerce.html" class="view-more">查看全部新闻 →</a>
-            </div>
-            
-            </div>
-        </section>
-
-        <section class="stats-section">
-            <h2><i class="fas fa-chart-bar"></i> 数据统计</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-newspaper"></i></div>
-                    <div class="stat-number">8</div>
-                    <div class="stat-label">今日新闻总数</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-industry"></i></div>
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">覆盖行业</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-sync-alt"></i></div>
-                    <div class="stat-number">每日</div>
-                    <div class="stat-label">更新频率</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-robot"></i></div>
-                    <div class="stat-number">AI驱动</div>
-                    <div class="stat-label">内容收集</div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>行业信息聚合平台</h3>
-                    <p>AI驱动的多行业信息聚合，每日更新最新行业动态</p>
-                </div>
-                <div class="footer-section">
-                    <h3>快速导航</h3>
-                    <ul>
-                        <li><a href="ai.html">🤖 人工智能</a></li><li><a href="electricity.html">⚡ 电力能源</a></li><li><a href="ecommerce.html">🛒 电子商务</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>关于我们</h3>
-                    <p>由 青青柠檬科技有限公司 提供技术支持</p>
-                    <p>AI驱动的行业信息聚合平台</p>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>© 2026 青青柠檬科技有限公司 | 最后更新：2026-04-25 15:58:55</p>
-                <p class="tech-note">本网站内容由AI自动收集整理，信息仅供参考</p>
-            </div>
+<main class="container">
+    <section class="hero">
+        <h1>点击<span>国家</span> · 探索世界</h1>
+        <p>查看各国基本信息 + 最新AI行业新闻</p>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="搜索国家名称..." onkeyup="if(event.key==='Enter')searchCountry()">
+            <button onclick="searchCountry()"><i class="fas fa-search"></i> 搜索</button>
         </div>
-    </footer>
+    </section>
 
-    <script src="js/script.js"></script>
+    <section class="map-wrap">
+        <div id="loading" class="loading-map">
+            <i class="fas fa-globe-asia"></i>
+            <p>加载世界地图...</p>
+        </div>
+        <svg id="worldmap" viewBox="0 0 1000 600" style="display:none;"></svg>
+    </section>
+</main>
+
+<!-- ===== 弹窗 ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-head">
+            <h2 id="modalTitle">🌍 国家信息</h2>
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-sub" id="modalSub"></div>
+        <div class="modal-body" id="modalBody">
+            <div class="modal-loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://d3js.org/topojson.v3.min.js"></script>
+<script>
+// ============================
+// 1. 新闻数据（按国家归类）
+// ============================
+const countryNews = {
+    '美国': [
+        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。即日起向Plus/Pro/企业用户推送。', source: 'The Verge / VentureBeat' },
+        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: '可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，支持长时间自主运行与持久记忆。', source: 'VentureBeat' },
+        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google计划先投100亿，达标后追加至400亿。Amazon已投80亿并承诺可追加200亿。', source: 'Bloomberg / The Verge' },
+        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案，完全断网运行，适合金融、医疗、国防行业。', source: 'VentureBeat' },
+        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes路线，AWS通过Bedrock优化执行速度。', source: 'VentureBeat' },
+        { title: 'DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法', summary: '司法部认为该法违反宪法平等保护条款，原定6月30日生效。', source: 'Bloomberg / The Verge' },
+        { title: 'AI 免费时代宣告终结', summary: '多家AI公司从获客烧钱转向变现盈利，OpenAI砍掉非核心项目。', source: 'The Verge' },
+    ],
+    '加拿大': [
+        { title: '加拿大校园枪击案引发 AI 安全监管争议', summary: '嫌犯多次向ChatGPT描述枪支暴力引发审核警报，但评估后未采取行动，最终酿成9死27伤。', source: 'The Verge' },
+    ],
+    '中国': [
+        { title: '腾讯混元大模型通过国家AI安全认证', summary: '成为首个通过国家AI安全认证的千亿参数模型。', source: '虎嗅' },
+    ],
+    '英国': [
+        { title: 'AI安全峰会：各国达成AI监管共识', summary: '28国签署AI安全宣言，承诺加强AI系统安全评估。', source: 'BBC' },
+    ],
+    '日本': [
+        { title: '日本软银投资OpenAI 150亿美元', summary: '软银集团计划投资OpenAI 150亿美元，加速亚洲AI市场布局。', source: 'Reuters' },
+    ],
+    '韩国': [
+        { title: '三星发布AI增强型Galaxy S26系列', summary: 'Galaxy S26深度集成AI功能，实时翻译和AI摄影再升级。', source: '韩国经济新闻' },
+    ],
+    '德国': [
+        { title: '德国通过AI监管法案草案', summary: '德国政府通过AI监管法案草案，要求高风险AI系统进行强制认证。', source: 'DW' },
+    ],
+    '法国': [
+        { title: '法国Mistral AI发布新开源模型', summary: 'Mistral AI发布新一代开源模型，性能接近GPT-4水平。', source: 'Le Monde' },
+    ],
+    '印度': [
+        { title: '印度AI创业公司融资创历史新高', summary: '2026年Q1印度AI创业公司融资超30亿美元，同比增长150%。', source: 'Economic Times' },
+    ],
+    '新加坡': [
+        { title: '新加坡推出AI治理框架2.0', summary: '更新版AI治理框架强调透明度和问责制，支持AI创新。', source: '海峡时报' },
+    ],
+    '澳大利亚': [
+        { title: '澳大利亚强制AI内容标注', summary: 'AI生成内容必须标注，违反将面临高额罚款。', source: 'ABC News' },
+    ],
+    '以色列': [
+        { title: '以色列AI芯片公司获10亿美元融资', summary: 'AI芯片初创公司旨在挑战NVIDIA在AI芯片领域的统治地位。', source: 'Calcalist' },
+    ],
+};
+
+// 未匹配国家的兜底新闻
+const defaultNews = [
+    { title: '全球AI产业持续高速增长', summary: '2026年全球AI市场规模预计突破5000亿美元。', source: 'McKinsey' },
+];
+
+// ============================
+// 2. 地图配置
+// ============================
+const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+const REST_COUNTRIES_URL = 'https://restcountries.com/v3.1/alpha/';
+const continentColors = {
+    'Asia': '#e74c3c', 'Africa': '#f39c12', 'Europe': '#3498db',
+    'North America': '#2ecc71', 'South America': '#9b59b6',
+    'Oceania': '#1abc9c', 'Antarctica': '#bdc3c7'
+};
+const labelCountries = {
+    'China': '中国', 'United States': '美国', 'Russia': '俄罗斯',
+    'Brazil': '巴西', 'India': '印度', 'Australia': '澳大利亚',
+    'Canada': '加拿大', 'Japan': '日本', 'South Korea': '韩国',
+    'United Kingdom': '英国', 'Germany': '德国', 'France': '法国'
+};
+
+let countryCache = {};
+let countryMap = {};
+let svg, path, g;
+
+// ============================
+// 3. 获取新闻（按国家名匹配）
+// ============================
+function getNewsForCountry(countryName) {
+    // 尝试映射英文名到中文
+    const nameMap = {
+        'china': '中国', 'united states': '美国', 'usa': '美国',
+        'canada': '加拿大', 'japan': '日本', 'south korea': '韩国', 'korea': '韩国',
+        'united kingdom': '英国', 'uk': '英国', 'germany': '德国',
+        'france': '法国', 'india': '印度', 'australia': '澳大利亚',
+        'singapore': '新加坡', 'israel': '以色列', 'russia': '俄罗斯',
+        'brazil': '巴西', 'italy': '意大利', 'spain': '西班牙',
+        'netherlands': '荷兰', 'sweden': '瑞典', 'switzerland': '瑞士',
+        'uae': '阿联酋', 'saudi arabia': '沙特阿拉伯',
+    };
+    const key = (nameMap[countryName.toLowerCase()] || countryName);
+    const news = countryNews[key];
+    if (news) return news;
+    // 模糊匹配
+    for (const [cn, items] of Object.entries(countryNews)) {
+        if (countryName.includes(cn) || cn.includes(countryName)) return items;
+    }
+    return defaultNews;
+}
+
+// ============================
+// 4. 弹窗控制
+// ============================
+function openModal() {
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+
+function formatNumber(num) {
+    if (num >= 1000000000) return (num/1000000000).toFixed(2) + ' 亿';
+    if (num >= 1000000) return (num/1000000).toFixed(2) + ' 百万';
+    if (num >= 10000) return (num/10000).toFixed(1) + ' 万';
+    return num.toLocaleString();
+}
+
+async function getCountryDetails(code) {
+    if (countryCache[code]) return countryCache[code];
+    const resp = await fetch(REST_COUNTRIES_URL + code);
+    if (!resp.ok) throw new Error('API请求失败');
+    const data = await resp.json(); const c = data[0];
+    const d = {
+        nameCommon: c.name?.common || '未知',
+        nameOfficial: c.name?.official || '未知',
+        flagEmoji: c.flag || '🏳️',
+        capital: c.capital ? c.capital[0] : '无',
+        region: c.region || '未知',
+        subregion: c.subregion || '',
+        population: c.population ? formatNumber(c.population) : '未知',
+        area: c.area ? formatNumber(c.area) + ' km²' : '未知',
+        languages: c.languages ? Object.values(c.languages).join(', ') : '未知',
+        currencies: c.currencies ? Object.values(c.currencies).map(x => `${x.name}${x.symbol?' ('+x.symbol+')':''}`).join(', ') : '未知',
+        timezones: c.timezones ? c.timezones.slice(0,3).join(', ')+(c.timezones.length>3?'...':'') : '未知',
+        continent: c.region || '未知',
+        borders: c.borders ? c.borders.length+' 个邻国' : '无陆地接壤',
+        unMember: c.unMember ? '是' : '否',
+        drivingSide: c.car?.side==='right'?'靠右':c.car?.side==='left'?'靠左':c.car?.side||'未知',
+        googleMap: c.maps?.googleMaps || '',
+    };
+    countryCache[code] = d; return d;
+}
+
+// ============================
+// 5. 显示国家信息 + 新闻
+// ============================
+async function showCountryInfo(name, code) {
+    openModal();
+    const titleEl = document.getElementById('modalTitle');
+    const subEl = document.getElementById('modalSub');
+    const bodyEl = document.getElementById('modalBody');
+
+    titleEl.innerHTML = `<span>${name}</span>`;
+    subEl.textContent = '正在获取信息...';
+    bodyEl.innerHTML = `<div class="modal-loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>`;
+
+    try {
+        const [d] = await Promise.all([getCountryDetails(code)]);
+        const color = continentColors[d.continent] || '#4fc3f7';
+        titleEl.innerHTML = `<span>${d.flagEmoji} ${d.nameCommon}</span>`;
+        subEl.textContent = `${d.nameOfficial} · ${d.region}${d.subregion?' · '+d.subregion:''}`;
+
+        // 获取该国家新闻
+        const news = getNewsForCountry(d.nameCommon);
+        const newsHtml = news.length > 0
+            ? news.slice(0, 10).map(n => `
+                <div class="country-news-item">
+                    <a href="#">${n.title}</a>
+                    <p style="font-size:0.8rem;color:#7f8c8d;margin-bottom:3px;">${n.summary}</p>
+                    <div class="meta"><span><i class="fas fa-newspaper"></i> ${n.source}</span></div>
+                </div>
+            `).join('')
+            : `<div class="country-news-empty">暂无相关行业新闻</div>`;
+
+        bodyEl.innerHTML = `
+            <div class="info-grid">
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-city"></i> 首都</div>
+                    <div class="val">${d.capital}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-users"></i> 人口</div>
+                    <div class="val">${d.population}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-globe-asia"></i> 面积</div>
+                    <div class="val">${d.area}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-globe"></i> 大洲</div>
+                    <div class="val">${d.continent}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-language"></i> 语言</div>
+                    <div class="val">${d.languages}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-money-bill-wave"></i> 货币</div>
+                    <div class="val">${d.currencies}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-clock"></i> 时区</div>
+                    <div class="val">${d.timezones}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-flag"></i> 联合国成员</div>
+                    <div class="val">${d.unMember}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-road"></i> 行驶方向</div>
+                    <div class="val">${d.drivingSide}</div>
+                </div>
+                <div class="info-item" style="border-left-color:${color}">
+                    <div class="lbl"><i class="fas fa-border-all"></i> 邻国</div>
+                    <div class="val">${d.borders}</div>
+                </div>
+            </div>
+            ${d.googleMap ? `<div style="margin-bottom:18px;"><a href="${d.googleMap}" target="_blank" style="color:#4fc3f7;font-size:0.85rem;text-decoration:none;"><i class="fas fa-map-marked-alt"></i> Google 地图</a></div>` : ''}
+
+            <div class="news-section-title"><i class="fas fa-newspaper"></i> 最新行业新闻</div>
+            <div class="country-news-list">${newsHtml}</div>
+        `;
+    } catch(e) {
+        bodyEl.innerHTML = `<div class="modal-error"><i class="fas fa-exclamation-circle" style="font-size:2rem;margin-bottom:12px;display:block;"></i><p>无法获取 ${name} 的信息</p></div>`;
+    }
+}
+
+// ============================
+// 6. 搜索
+// ============================
+function searchCountry() {
+    const q = document.getElementById('searchInput').value.trim().toLowerCase();
+    if (!q) return;
+    let code=null, name=null;
+    for (const [n,c] of Object.entries(countryMap)) {
+        if (n.toLowerCase()===q || n.toLowerCase().includes(q)) { code=c; name=n; break; }
+    }
+    if (code) {
+        showCountryInfo(name, code);
+        g.selectAll('path').attr('opacity', 0.7);
+        g.selectAll('path').filter(d => d.id===code).attr('opacity',1).attr('stroke','#4fc3f7').attr('stroke-width',2);
+    } else {
+        openModal();
+        document.getElementById('modalTitle').innerHTML = `<span>🔍 未找到</span>`;
+        document.getElementById('modalSub').textContent = '';
+        document.getElementById('modalBody').innerHTML = `<div style="text-align:center;padding:30px;color:#e67e22;"><p>未找到 "${document.getElementById('searchInput').value.trim()}"</p></div>`;
+    }
+}
+
+// ============================
+// 7. 初始化地图
+// ============================
+async function initMap() {
+    try {
+        const resp = await fetch(WORLD_URL);
+        const world = await resp.json();
+        world.objects.countries.geometries.forEach(c => {
+            if (c.properties?.name) countryMap[c.properties.name] = c.id;
+        });
+
+        svg = d3.select('#worldmap');
+        g = svg.append('g');
+        const projection = d3.geoMercator().fitSize([1000,600], {type:'Sphere'});
+        path = d3.geoPath().projection(projection);
+
+        g.selectAll('path')
+            .data(topojson.feature(world, world.objects.countries).features)
+            .join('path')
+            .attr('d', path)
+            .attr('fill', d => continentColors[d.properties.continent] || '#2c3e50')
+            .attr('stroke', '#1a2a3a').attr('stroke-width', 0.6)
+            .on('click', function(ev, d) {
+                showCountryInfo(d.properties.name, d.id);
+                g.selectAll('path').attr('opacity', 0.7);
+                d3.select(this).attr('opacity',1).attr('stroke','#4fc3f7').attr('stroke-width',2);
+            })
+            .on('mouseover', function() { d3.select(this).attr('opacity',0.85); })
+            .on('mouseout', function() { d3.select(this).attr('opacity',null); });
+
+        g.selectAll('text')
+            .data(topojson.feature(world, world.objects.countries).features.filter(d=>labelCountries[d.properties.name]))
+            .join('text')
+            .attr('transform', d => `translate(${path.centroid(d)[0]},${path.centroid(d)[1]})`)
+            .attr('text-anchor','middle').attr('font-size','11px').attr('font-weight','600')
+            .attr('fill','#fff').attr('stroke','#0f1923').attr('stroke-width',0.4).attr('paint-order','stroke')
+            .text(d => labelCountries[d.properties.name]);
+
+        document.getElementById('loading').style.display = 'none';
+        svg.style('display', 'block');
+    } catch(e) {
+        document.getElementById('loading').innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i><p style="color:#e74c3c;">地图加载失败</p>`;
+    }
+}
+document.addEventListener('DOMContentLoaded', initMap);
+</script>
 </body>
 </html>
