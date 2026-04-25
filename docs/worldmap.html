@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界地图 - 行业信息聚合平台</title>
+    <meta name="description" content="交互式世界地图，点击国家查看基本信息">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 世界地图页面专属样式 */
+        .map-hero {
+            background: linear-gradient(135deg, #1a5276 0%, #2e86c1 50%, #85c1e9 100%);
+            color: white;
+            padding: 50px 0;
+            margin: 30px 0;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .map-hero h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        .map-hero p { font-size: 1.1rem; opacity: 0.9; }
+
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            position: relative;
+        }
+        #worldmap {
+            width: 100%;
+            height: auto;
+            cursor: pointer;
+        }
+        #worldmap path {
+            stroke: #fff;
+            stroke-width: 0.5;
+            transition: fill 0.2s ease;
+        }
+        #worldmap path:hover {
+            opacity: 0.8;
+        }
+
+        /* 国家信息面板 */
+        .country-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin: 30px 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .country-panel .placeholder {
+            text-align: center;
+            color: #95a5a6;
+        }
+        .country-panel .placeholder i {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+        .country-panel .placeholder p {
+            font-size: 1.1rem;
+        }
+
+        .country-info {
+            width: 100%;
+            animation: fadeIn 0.4s ease;
+        }
+        .country-info h2 {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .country-info .flag {
+            font-size: 2rem;
+            line-height: 1;
+        }
+        .country-info .subtitle {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .country-stat {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        .country-stat .label {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-bottom: 5px;
+        }
+        .country-stat .value {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 搜索框 */
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+        .search-bar input:focus {
+            border-color: #3498db;
+        }
+        .search-bar button {
+            padding: 12px 25px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        .search-bar button:hover {
+            background: #2980b9;
+        }
+
+        /* 加载状态 */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+        .loading-spinner i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .country-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .country-info h2 {
+                font-size: 1.5rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .country-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-newspaper"></i> 行业信息聚合平台</h1>
+                <p class="tagline">AI驱动的多行业信息聚合，每日更新最新行业动态</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i> 首页</a></li>
+                    <li><a href="ai.html">🤖 人工智能</a></li>
+                    <li><a href="worldmap.html" class="active">🌍 世界地图</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> 关于</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="map-hero">
+            <h1>🌍 世界地图信息站</h1>
+            <p>点击地图上的国家，探索世界各国的基本信息</p>
+        </section>
+
+        <section class="controls">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="搜索国家名称（中/英文）..." onkeyup="if(event.key==='Enter') searchCountry()">
+                <button onclick="searchCountry()"><i class="fas fa-search"></i> 搜索</button>
+            </div>
+        </section>
+
+        <section class="map-container">
+            <div id="loading" class="loading-spinner">
+                <i class="fas fa-globe-asia"></i>
+                <p>加载世界地图数据中...</p>
+            </div>
+            <svg id="worldmap" viewBox="0 0 1000 600" style="display:none;"></svg>
+        </section>
+
+        <section class="country-panel" id="countryPanel">
+            <div class="placeholder" id="placeholder">
+                <i class="fas fa-hand-pointer"></i>
+                <p>点击地图上的国家，查看详细信息</p>
+            </div>
+            <div class="country-info" id="countryInfo" style="display:none;"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>行业信息聚合平台</h3>
+                    <p>AI驱动的多行业信息聚合，每日更新最新行业动态</p>
+                </div>
+                <div class="footer-section">
+                    <h3>快速导航</h3>
+                    <ul>
+                        <li><a href="ai.html">🤖 人工智能</a></li>
+                        <li><a href="worldmap.html">🌍 世界地图</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>关于我们</h3>
+                    <p>由 青青柠檬科技有限公司 提供技术支持</p>
+                    <p>AI驱动的行业信息聚合平台</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2026 青青柠檬科技有限公司 | 数据来源：REST Countries API</p>
+                <p class="tech-note">本网站内容由AI自动收集整理，信息仅供参考</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://d3js.org/topojson.v3.min.js"></script>
+    <script>
+        // ========================
+        // 世界地图主逻辑
+        // ========================
+
+        // 国家数据缓存（避免重复请求API）
+        let countryCache = {};
+        let countryMap = {}; // name -> iso code mapping
+
+        // 世界地图的路径（简化版50个主要国家）
+        // 使用更精确的国家边界数据
+        const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
+        const REST_COUNTRIES_URL = 'https://restcountries.com/v3.1/alpha/';
+
+        // 基础颜色映射 - 各大洲颜色
+        const continentColors = {
+            'Asia': '#e74c3c',
+            'Africa': '#f39c12',
+            'Europe': '#3498db',
+            'North America': '#2ecc71',
+            'South America': '#9b59b6',
+            'Oceania': '#1abc9c',
+            'Antarctica': '#bdc3c7'
+        };
+
+        // ISO 3166-1 国家代码映射
+        const countryNameToCode = {};
+
+        let svg, path, g;
+
+        // 初始化地图
+        async function initMap() {
+            try {
+                const response = await fetch(WORLD_URL);
+                const world = await response.json();
+
+                // 建立国家名称到ISO代码的映射
+                const countries = world.objects.countries.geometries;
+                countries.forEach(c => {
+                    if (c.properties && c.properties.name) {
+                        countryNameToCode[c.properties.name.toLowerCase()] = c.id;
+                    }
+                });
+
+                // 建立反向映射供搜索用
+                countries.forEach(c => {
+                    if (c.properties && c.properties.name) {
+                        countryMap[c.properties.name] = c.id;
+                    }
+                });
+
+                svg = d3.select('#worldmap');
+                g = svg.append('g');
+
+                const projection = d3.geoMercator()
+                    .fitSize([1000, 600], { type: 'Sphere' });
+
+                path = d3.geoPath().projection(projection);
+
+                // 绘制国家
+                g.selectAll('path')
+                    .data(topojson.feature(world, world.objects.countries).features)
+                    .join('path')
+                    .attr('d', path)
+                    .attr('fill', d => {
+                        const continent = d.properties.continent || 'Unknown';
+                        return continentColors[continent] || '#95a5a6';
+                    })
+                    .attr('stroke', '#fff')
+                    .attr('stroke-width', 0.5)
+                    .on('click', function(event, d) {
+                        const countryName = d.properties.name;
+                        showCountryInfo(countryName, d.id);
+                        // 高亮选中的国家
+                        g.selectAll('path').attr('opacity', 0.7);
+                        d3.select(this).attr('opacity', 1).attr('stroke', '#fff').attr('stroke-width', 2);
+                    })
+                    .on('mouseover', function() {
+                        d3.select(this).attr('opacity', 0.9);
+                    })
+                    .on('mouseout', function() {
+                        d3.select(this).attr('opacity', null);
+                    });
+
+                // 添加国家标签（只显示大国）
+                const labelCountries = ['中国', '美国', '俄罗斯', '巴西', '印度', '澳大利亚', '加拿大'];
+                // 添加英文名也支持的匹配
+                const topoNameToLabel = {
+                    'China': '中国', 'United States': '美国', 'Russia': '俄罗斯',
+                    'Brazil': '巴西', 'India': '印度', 'Australia': '澳大利亚',
+                    'Canada': '加拿大'
+                };
+                
+                g.selectAll('text')
+                    .data(topojson.feature(world, world.objects.countries).features.filter(
+                        d => topoNameToLabel[d.properties.name]
+                    ))
+                    .join('text')
+                    .attr('transform', d => {
+                        const centroid = path.centroid(d);
+                        return `translate(${centroid[0]},${centroid[1]})`;
+                    })
+                    .attr('text-anchor', 'middle')
+                    .attr('font-size', '11px')
+                    .attr('font-weight', '600')
+                    .attr('fill', '#fff')
+                    .attr('stroke', '#333')
+                    .attr('stroke-width', 0.3)
+                    .attr('paint-order', 'stroke')
+                    .text(d => topoNameToLabel[d.properties.name]);
+
+                // 隐藏loading，显示svg
+                document.getElementById('loading').style.display = 'none';
+                svg.style('display', 'block');
+
+            } catch (error) {
+                console.error('加载地图失败:', error);
+                document.getElementById('loading').innerHTML = `
+                    <i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i>
+                    <p style="color:#e74c3c;">地图加载失败，请刷新页面重试</p>
+                    <p style="font-size:0.85rem;color:#95a5a6;">${error.message}</p>
+                `;
+            }
+        }
+
+        // 获取国家详细信息
+        async function getCountryDetails(countryCode) {
+            if (countryCache[countryCode]) {
+                return countryCache[countryCode];
+            }
+            try {
+                const response = await fetch(REST_COUNTRIES_URL + countryCode);
+                if (!response.ok) throw new Error('API请求失败');
+                const data = await response.json();
+                const country = data[0];
+
+                // 格式化数据
+                const details = {
+                    name: {
+                        common: country.name?.common || '未知',
+                        official: country.name?.official || '未知'
+                    },
+                    flag: country.flag || country.flags?.png || '',
+                    flagEmoji: country.flag || '🏳️',
+                    capital: country.capital ? country.capital[0] : '无首都信息',
+                    region: country.region || '未知',
+                    subregion: country.subregion || '未知',
+                    population: country.population ? formatNumber(country.population) : '未知',
+                    area: country.area ? formatNumber(country.area) + ' km²' : '未知',
+                    languages: country.languages ? Object.values(country.languages).join(', ') : '未知',
+                    currencies: country.currencies ? Object.values(country.currencies).map(c => `${c.name} (${c.symbol || ''})`).join(', ') : '未知',
+                    timezones: country.timezones ? country.timezones.slice(0, 3).join(', ') + (country.timezones.length > 3 ? '...' : '') : '未知',
+                    continent: country.region || '未知',
+                    borders: country.borders ? country.borders.length + ' 个邻国' : '无陆地接壤',
+                    independent: country.independent ? '是' : '否',
+                    unMember: country.unMember ? '是' : '否',
+                    drivingSide: country.car?.side || '未知',
+                    startOfWeek: country.startOfWeek || '未知',
+                    googleMap: country.maps?.googleMaps || '',
+                    openStreetMap: country.maps?.openStreetMaps || ''
+                };
+                countryCache[countryCode] = details;
+                return details;
+            } catch (error) {
+                console.error('获取国家详情失败:', error);
+                return null;
+            }
+        }
+
+        // 格式化大数字
+        function formatNumber(num) {
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(2) + ' 亿';
+            } else if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + ' 百万';
+            } else if (num >= 10000) {
+                return (num / 10000).toFixed(1) + ' 万';
+            }
+            return num.toLocaleString();
+        }
+
+        // 显示国家信息
+        async function showCountryInfo(name, code) {
+            const panel = document.getElementById('countryPanel');
+            const placeholder = document.getElementById('placeholder');
+            const infoDiv = document.getElementById('countryInfo');
+
+            // 显示加载状态
+            placeholder.style.display = 'none';
+            infoDiv.style.display = 'block';
+            infoDiv.innerHTML = `<div class="loading-spinner"><i class="fas fa-spinner"></i><p>正在加载 ${name} 的信息...</p></div>`;
+
+            const details = await getCountryDetails(code);
+            if (!details) {
+                infoDiv.innerHTML = `
+                    <div style="text-align:center;padding:30px;color:#e74c3c;">
+                        <i class="fas fa-exclamation-circle" style="font-size:2rem;display:block;margin-bottom:15px;"></i>
+                        <p>无法获取 ${name} 的详细信息</p>
+                        <p style="font-size:0.85rem;color:#95a5a6;margin-top:10px;">API请求失败，请稍后重试</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const continentColor = continentColors[details.continent] || '#3498db';
+
+            infoDiv.innerHTML = `
+                <div class="country-info-content" style="animation: fadeIn 0.4s ease;">
+                    <h2>
+                        <span class="flag">${details.flagEmoji}</span>
+                        ${details.name.common}
+                    </h2>
+                    <p class="subtitle">${details.name.official} · ${details.region}${details.subregion !== '未知' ? ' · ' + details.subregion : ''}</p>
+
+                    <div class="country-grid">
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-city"></i> 首都</div>
+                            <div class="value">${details.capital}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-users"></i> 人口</div>
+                            <div class="value">${details.population}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-globe-asia"></i> 面积</div>
+                            <div class="value">${details.area}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-globe"></i> 大洲</div>
+                            <div class="value">${details.continent}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-language"></i> 语言</div>
+                            <div class="value">${details.languages}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-money-bill-wave"></i> 货币</div>
+                            <div class="value">${details.currencies}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-clock"></i> 时区</div>
+                            <div class="value">${details.timezones}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-road"></i> 行驶方向</div>
+                            <div class="value">${details.drivingSide === 'right' ? '靠右行驶' : details.drivingSide === 'left' ? '靠左行驶' : details.drivingSide}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-flag"></i> 联合国成员</div>
+                            <div class="value">${details.unMember}</div>
+                        </div>
+                        <div class="country-stat" style="border-left-color: ${continentColor};">
+                            <div class="label"><i class="fas fa-border-all"></i> 邻国</div>
+                            <div class="value">${details.borders}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        ${details.googleMap ? `<a href="${details.googleMap}" target="_blank" class="read-more"><i class="fas fa-map-marked-alt"></i> 在 Google 地图上查看</a>` : ''}
+                        ${details.openStreetMap ? `<a href="${details.openStreetMap}" target="_blank" class="read-more"><i class="fas fa-map"></i> 在 OpenStreetMap 上查看</a>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+
+        // 搜索国家
+        function searchCountry() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) return;
+
+            // 尝试在 countryMap 中匹配
+            let matchedCode = null;
+            let matchedName = null;
+
+            // 精确匹配
+            for (const [name, code] of Object.entries(countryMap)) {
+                if (name.toLowerCase() === query) {
+                    matchedCode = code;
+                    matchedName = name;
+                    break;
+                }
+            }
+
+            // 模糊匹配
+            if (!matchedCode) {
+                for (const [name, code] of Object.entries(countryMap)) {
+                    if (name.toLowerCase().includes(query)) {
+                        matchedCode = code;
+                        matchedName = name;
+                        break;
+                    }
+                }
+            }
+
+            if (matchedCode) {
+                showCountryInfo(matchedName, matchedCode);
+                // 高亮该国家
+                g.selectAll('path').attr('opacity', 0.7);
+                g.selectAll('path').filter(d => d.id === matchedCode).attr('opacity', 1).attr('stroke', '#fff').attr('stroke-width', 2);
+            } else {
+                // 没找到
+                const placeholder = document.getElementById('placeholder');
+                const infoDiv = document.getElementById('countryInfo');
+                placeholder.style.display = 'none';
+                infoDiv.style.display = 'block';
+                infoDiv.innerHTML = `
+                    <div style="text-align:center;padding:30px;color:#e67e22;">
+                        <i class="fas fa-search" style="font-size:2rem;display:block;margin-bottom:15px;"></i>
+                        <p>未找到 "${document.getElementById('searchInput').value.trim()}"</p>
+                        <p style="font-size:0.85rem;color:#95a5a6;margin-top:10px;">请尝试使用国家的中文或英文名称搜索</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面加载完成后初始化地图
+        document.addEventListener('DOMContentLoaded', initMap);
+    </script>
+</body>
+</html>
