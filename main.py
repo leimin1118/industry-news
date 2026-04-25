@@ -6,6 +6,8 @@
 
 import os
 import sys
+import json
+import glob
 import logging
 from datetime import datetime
 
@@ -28,16 +30,29 @@ def main():
     logger.info("=" * 60)
     
     try:
-        # 1. 收集新闻
-        logger.info("\n📰 步骤1: 收集行业新闻")
+        # 1. 检查是否有手动推送的AI新闻数据
+        logger.info("\n📰 步骤1: 检查已有新闻数据")
         logger.info("-" * 40)
         
-        from news_collector import NewsCollector
-        collector = NewsCollector()
-        news_data = collector.collect_news()
+        import glob
+        data_dir = "data"
+        summary_files = sorted(glob.glob(os.path.join(data_dir, "summary_*.json")), reverse=True)
         
-        if not news_data or news_data['total_news'] == 0:
-            logger.warning("新闻收集结果为空，将继续使用模拟数据生成网站")
+        if summary_files:
+            # 读取最新的汇总文件
+            latest_file = summary_files[0]
+            with open(latest_file, 'r', encoding='utf-8') as f:
+                news_data = json.load(f)
+            logger.info(f"找到已有数据: {os.path.basename(latest_file)}, 共 {news_data.get('total_news', 0)} 条新闻")
+        else:
+            # 没有数据时收集新闻
+            logger.info("未找到已有数据，开始收集新闻...")
+            from news_collector import NewsCollector
+            collector = NewsCollector()
+            news_data = collector.collect_news()
+            
+            if not news_data or news_data['total_news'] == 0:
+                logger.warning("新闻收集结果为空")
         
         # 2. 生成网站
         logger.info("\n🌐 步骤2: 生成静态网站")
@@ -55,7 +70,8 @@ def main():
         logger.info("\n📊 步骤3: 生成统计报告")
         logger.info("-" * 40)
         
-        _print_statistics(news_data)
+        if news_data:
+            _print_statistics(news_data)
         
         # 4. 下一步建议
         logger.info("\n🚀 步骤4: 后续操作建议")
