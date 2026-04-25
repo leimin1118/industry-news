@@ -1,0 +1,315 @@
+{
+  "date": "2026-04-22",
+  "total_news": 30,
+  "industries": [
+    "ai",
+    "electricity",
+    "ecommerce"
+  ],
+  "collection_time": "2026-04-22T00:04:29.319716",
+  "data": {
+    "ai": {
+      "industry_id": "ai",
+      "industry_name": "人工智能",
+      "industry_name_en": "Artificial Intelligence",
+      "color": "#4CAF50",
+      "icon": "🤖",
+      "collected_at": "2026-04-22T00:04:29.313684",
+      "news_count": 10,
+      "news_items": [
+        {
+          "title": "OpenAI发布新一代推理模型，性能提升30%",
+          "summary": "这是关于OpenAI发布新一代推理模型，性能提升30%的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news0",
+          "source": "机器之心",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "中国AI芯片突破7nm工艺，华为海思领先",
+          "summary": "这是关于中国AI芯片突破7nm工艺，华为海思领先的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news1",
+          "source": "36氪AI",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "百度文心一言4.0正式发布，多项能力升级",
+          "summary": "这是关于百度文心一言4.0正式发布，多项能力升级的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news2",
+          "source": "量子位",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "腾讯混元大模型通过国家备案",
+          "summary": "这是关于腾讯混元大模型通过国家备案的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news3",
+          "source": "AI科技评论",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "字节跳动AI实验室发布多模态模型",
+          "summary": "这是关于字节跳动AI实验室发布多模态模型的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news4",
+          "source": "TechCrunch AI",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "谷歌发布Gemini 2.0，比上一代快40%",
+          "summary": "这是关于谷歌发布Gemini 2.0，比上一代快40%的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news5",
+          "source": "MIT Technology Review AI",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "微软将AI集成到Windows 12系统",
+          "summary": "这是关于微软将AI集成到Windows 12系统的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news6",
+          "source": "机器之心",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "Meta发布新的开源语言模型",
+          "summary": "这是关于Meta发布新的开源语言模型的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news7",
+          "source": "36氪AI",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "亚马逊增强AWS AI服务",
+          "summary": "这是关于亚马逊增强AWS AI服务的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news8",
+          "source": "量子位",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "苹果在iOS 18中展示AI功能",
+          "summary": "这是关于苹果在iOS 18中展示AI功能的最新行业动态，涉及人工智能领域的重要进展。",
+          "url": "https://example.com/人工智能/news9",
+          "source": "AI科技评论",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        }
+      ]
+    },
+    "electricity": {
+      "industry_id": "electricity",
+      "industry_name": "电力能源",
+      "industry_name_en": "Electric Power & Energy",
+      "color": "#2196F3",
+      "icon": "⚡",
+      "collected_at": "2026-04-22T00:04:29.315695",
+      "news_count": 10,
+      "news_items": [
+        {
+          "title": "国家电网推进智能电网建设",
+          "summary": "这是关于国家电网推进智能电网建设的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news0",
+          "source": "北极星电力网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "新能源装机容量突破历史新高",
+          "summary": "这是关于新能源装机容量突破历史新高的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news1",
+          "source": "中国电力新闻网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力物联网技术取得重大突破",
+          "summary": "这是关于电力物联网技术取得重大突破的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news2",
+          "source": "能源界",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "储能产业发展迎来政策利好",
+          "summary": "这是关于储能产业发展迎来政策利好的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news3",
+          "source": "国际能源网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力市场化改革深入推进",
+          "summary": "这是关于电力市场化改革深入推进的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news4",
+          "source": "电力头条",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "清洁能源占比持续提升",
+          "summary": "这是关于清洁能源占比持续提升的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news5",
+          "source": "北极星电力网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力设备智能化升级加速",
+          "summary": "这是关于电力设备智能化升级加速的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news6",
+          "source": "中国电力新闻网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力行业数字化转型成效显著",
+          "summary": "这是关于电力行业数字化转型成效显著的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news7",
+          "source": "能源界",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力安全保障能力全面提升",
+          "summary": "这是关于电力安全保障能力全面提升的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news8",
+          "source": "国际能源网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电力科技创新成果丰硕",
+          "summary": "这是关于电力科技创新成果丰硕的最新行业动态，涉及电力能源领域的重要进展。",
+          "url": "https://example.com/电力能源/news9",
+          "source": "电力头条",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        }
+      ]
+    },
+    "ecommerce": {
+      "industry_id": "ecommerce",
+      "industry_name": "电子商务",
+      "industry_name_en": "E-commerce",
+      "color": "#FF9800",
+      "icon": "🛒",
+      "collected_at": "2026-04-22T00:04:29.317706",
+      "news_count": 10,
+      "news_items": [
+        {
+          "title": "电商平台618大促即将开启",
+          "summary": "这是关于电商平台618大促即将开启的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news0",
+          "source": "亿邦动力",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "直播带货新规正式实施",
+          "summary": "这是关于直播带货新规正式实施的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news1",
+          "source": "派代网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "跨境电商迎来政策红利",
+          "summary": "这是关于跨境电商迎来政策红利的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news2",
+          "source": "天下网商",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "社交电商发展势头迅猛",
+          "summary": "这是关于社交电商发展势头迅猛的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news3",
+          "source": "联商网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "物流配送效率大幅提升",
+          "summary": "这是关于物流配送效率大幅提升的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news4",
+          "source": "电子商务研究中心",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "数字营销创新模式不断涌现",
+          "summary": "这是关于数字营销创新模式不断涌现的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news5",
+          "source": "亿邦动力",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "消费者购物行为变化分析",
+          "summary": "这是关于消费者购物行为变化分析的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news6",
+          "source": "派代网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电商平台竞争格局新变化",
+          "summary": "这是关于电商平台竞争格局新变化的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news7",
+          "source": "天下网商",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "农村电商助力乡村振兴",
+          "summary": "这是关于农村电商助力乡村振兴的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news8",
+          "source": "联商网",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        },
+        {
+          "title": "电商行业数字化转型加速",
+          "summary": "这是关于电商行业数字化转型加速的最新行业动态，涉及电子商务领域的重要进展。",
+          "url": "https://example.com/电子商务/news9",
+          "source": "电子商务研究中心",
+          "published_date": "2026-04-22",
+          "language": "zh",
+          "is_mock_data": true
+        }
+      ]
+    }
+  }
+}

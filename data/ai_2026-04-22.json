@@ -1,0 +1,101 @@
+{
+  "industry_id": "ai",
+  "industry_name": "人工智能",
+  "industry_name_en": "Artificial Intelligence",
+  "color": "#4CAF50",
+  "icon": "🤖",
+  "collected_at": "2026-04-22T00:04:29.313684",
+  "news_count": 10,
+  "news_items": [
+    {
+      "title": "OpenAI发布新一代推理模型，性能提升30%",
+      "summary": "这是关于OpenAI发布新一代推理模型，性能提升30%的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news0",
+      "source": "机器之心",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "中国AI芯片突破7nm工艺，华为海思领先",
+      "summary": "这是关于中国AI芯片突破7nm工艺，华为海思领先的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news1",
+      "source": "36氪AI",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "百度文心一言4.0正式发布，多项能力升级",
+      "summary": "这是关于百度文心一言4.0正式发布，多项能力升级的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news2",
+      "source": "量子位",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "腾讯混元大模型通过国家备案",
+      "summary": "这是关于腾讯混元大模型通过国家备案的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news3",
+      "source": "AI科技评论",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "字节跳动AI实验室发布多模态模型",
+      "summary": "这是关于字节跳动AI实验室发布多模态模型的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news4",
+      "source": "TechCrunch AI",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "谷歌发布Gemini 2.0，比上一代快40%",
+      "summary": "这是关于谷歌发布Gemini 2.0，比上一代快40%的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news5",
+      "source": "MIT Technology Review AI",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "微软将AI集成到Windows 12系统",
+      "summary": "这是关于微软将AI集成到Windows 12系统的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news6",
+      "source": "机器之心",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "Meta发布新的开源语言模型",
+      "summary": "这是关于Meta发布新的开源语言模型的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news7",
+      "source": "36氪AI",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "亚马逊增强AWS AI服务",
+      "summary": "这是关于亚马逊增强AWS AI服务的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news8",
+      "source": "量子位",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "苹果在iOS 18中展示AI功能",
+      "summary": "这是关于苹果在iOS 18中展示AI功能的最新行业动态，涉及人工智能领域的重要进展。",
+      "url": "https://example.com/人工智能/news9",
+      "source": "AI科技评论",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    }
+  ]
+}

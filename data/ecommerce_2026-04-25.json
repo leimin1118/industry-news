@@ -1,0 +1,101 @@
+{
+  "industry_id": "ecommerce",
+  "industry_name": "电子商务",
+  "industry_name_en": "E-commerce",
+  "color": "#FF9800",
+  "icon": "🛒",
+  "collected_at": "2026-04-25T10:17:59.222045",
+  "news_count": 10,
+  "news_items": [
+    {
+      "title": "电商平台618大促即将开启",
+      "summary": "这是关于电商平台618大促即将开启的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news0",
+      "source": "亿邦动力",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "直播带货新规正式实施",
+      "summary": "这是关于直播带货新规正式实施的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news1",
+      "source": "派代网",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "跨境电商迎来政策红利",
+      "summary": "这是关于跨境电商迎来政策红利的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news2",
+      "source": "天下网商",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "社交电商发展势头迅猛",
+      "summary": "这是关于社交电商发展势头迅猛的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news3",
+      "source": "联商网",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "物流配送效率大幅提升",
+      "summary": "这是关于物流配送效率大幅提升的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news4",
+      "source": "电子商务研究中心",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "数字营销创新模式不断涌现",
+      "summary": "这是关于数字营销创新模式不断涌现的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news5",
+      "source": "亿邦动力",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "消费者购物行为变化分析",
+      "summary": "这是关于消费者购物行为变化分析的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news6",
+      "source": "派代网",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电商平台竞争格局新变化",
+      "summary": "这是关于电商平台竞争格局新变化的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news7",
+      "source": "天下网商",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "农村电商助力乡村振兴",
+      "summary": "这是关于农村电商助力乡村振兴的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news8",
+      "source": "联商网",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电商行业数字化转型加速",
+      "summary": "这是关于电商行业数字化转型加速的最新行业动态，涉及电子商务领域的重要进展。",
+      "url": "https://example.com/电子商务/news9",
+      "source": "电子商务研究中心",
+      "published_date": "2026-04-25",
+      "language": "zh",
+      "is_mock_data": true
+    }
+  ]
+}

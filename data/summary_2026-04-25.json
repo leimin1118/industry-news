@@ -1,0 +1,93 @@
+{
+  "date": "2026-04-25",
+  "total_news": 8,
+  "industries": [
+    "ai"
+  ],
+  "collection_time": "2026-04-25T10:18:17.218216",
+  "data": {
+    "ai": {
+      "industry_id": "ai",
+      "industry_name": "人工智能",
+      "industry_name_en": "Artificial Intelligence",
+      "color": "#4CAF50",
+      "icon": "🤖",
+      "collected_at": "2026-04-25T10:18:17.218216",
+      "news_count": 8,
+      "news_items": [
+        {
+          "title": "OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程",
+          "summary": "OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。在编码调试、在线研究、跨工具工作等任务上表现突出，使用更少的token即可完成任务。即日起向Plus/Pro/企业用户推送。",
+          "url": "https://www.theverge.com",
+          "source": "The Verge / VentureBeat",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "OpenAI 推出 Workspace Agents 企业级 AI 代理平台",
+          "summary": "作为Custom GPT的继任者，Workspace Agents可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，基于Codex引擎驱动，支持长时间自主运行、跨应用协作与持久记忆。5月6日前免费。",
+          "url": "https://venturebeat.com",
+          "source": "VentureBeat",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "Google 豪掷 400 亿美元布局 Anthropic",
+          "summary": "Google先投100亿，达标后追加至400亿。此前Amazon已投80亿，本周再投50亿并承诺未来可追加200亿。AI军备竞赛全面白热化。",
+          "url": "https://www.bloomberg.com",
+          "source": "Bloomberg / The Verge",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "Google Gemini 可部署到完全离线环境",
+          "summary": "Cirrascale推出Gemini本地部署方案：Dell硬件+8块NVIDIA GPU，完全断网运行。数据不经过Google基础设施，适合金融、医疗、国防等高度监管行业。",
+          "url": "https://venturebeat.com",
+          "source": "VentureBeat",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "Google vs AWS：AI 代理架构两派分化",
+          "summary": "Google走Kubernetes控制面板路线，注重治理和安全；AWS通过Bedrock AgentCore优化执行速度，让代理快速上线。一个管编排，一个管执行。",
+          "url": "https://venturebeat.com",
+          "source": "VentureBeat",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法",
+          "summary": "司法部认为该法要求开发者采取合理注意防止算法歧视违反宪法平等保护条款。原定6月30日生效。",
+          "url": "https://www.bloomberg.com",
+          "source": "Bloomberg / The Verge",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "加拿大校园枪击案引发 AI 安全监管争议",
+          "summary": "嫌犯数月前多次向ChatGPT描述枪支暴力引发审核警报，但OpenAI评估后认为非即时可信威胁，仅封号处理。最终酿成9死27伤的悲剧。",
+          "url": "https://www.theverge.com",
+          "source": "The Verge",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        },
+        {
+          "title": "AI 免费时代宣告终结",
+          "summary": "广告加载、速率限制、订阅涨价……多家AI公司开始从获客烧钱转向变现盈利。OpenAI砍掉非核心项目，全力追逐更强劲的营收引擎。",
+          "url": "https://www.theverge.com",
+          "source": "The Verge",
+          "published_date": "2026-04-25",
+          "language": "zh",
+          "is_mock_data": false
+        }
+      ]
+    }
+  }
+}

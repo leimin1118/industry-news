@@ -1,0 +1,6 @@
+# 行业信息网站依赖
+feedparser==6.0.10
+requests==2.31.0
+
+# 可选：tavily CLI需要安装，不在pip中
+# 安装命令: curl -fsSL https://cli.tavily.com/install.sh | bash

@@ -1,0 +1,101 @@
+{
+  "industries": {
+    "ai": {
+      "name": "人工智能",
+      "name_en": "Artificial Intelligence",
+      "keywords": [
+        "AI 新闻",
+        "人工智能",
+        "机器学习",
+        "深度学习",
+        "大语言模型",
+        "计算机视觉",
+        "自然语言处理",
+        "AI芯片",
+        "智能算法"
+      ],
+      "sources": [
+        "机器之心",
+        "36氪AI",
+        "量子位",
+        "AI科技评论",
+        "TechCrunch AI",
+        "MIT Technology Review AI"
+      ],
+      "color": "#4CAF50",
+      "icon": "🤖"
+    },
+    "electricity": {
+      "name": "电力能源",
+      "name_en": "Electric Power & Energy",
+      "keywords": [
+        "电力行业",
+        "新能源",
+        "智能电网",
+        "电力设备",
+        "能源转型",
+        "电力市场",
+        "清洁能源",
+        "储能技术",
+        "电力物联网"
+      ],
+      "sources": [
+        "北极星电力网",
+        "中国电力新闻网",
+        "能源界",
+        "国际能源网",
+        "电力头条"
+      ],
+      "color": "#2196F3",
+      "icon": "⚡"
+    },
+    "ecommerce": {
+      "name": "电子商务",
+      "name_en": "E-commerce",
+      "keywords": [
+        "电商新闻",
+        "电子商务",
+        "网络零售",
+        "跨境电商",
+        "直播带货",
+        "电商平台",
+        "物流配送",
+        "数字营销",
+        "消费者行为"
+      ],
+      "sources": [
+        "亿邦动力",
+        "派代网",
+        "天下网商",
+        "联商网",
+        "电子商务研究中心"
+      ],
+      "color": "#FF9800",
+      "icon": "🛒"
+    }
+  },
+  "website": {
+    "name": "行业信息聚合平台",
+    "name_en": "Industry News Aggregator",
+    "description": "AI驱动的多行业信息聚合，每日更新最新行业动态",
+    "description_en": "AI-powered multi-industry news aggregator, updated daily with latest industry trends",
+    "author": "青青柠檬科技有限公司",
+    "base_url": "https://qingning-tech.github.io/industry-news/",
+    "language": "zh-CN",
+    "timezone": "Asia/Shanghai"
+  },
+  "data_collection": {
+    "max_news_per_industry": 10,
+    "update_frequency": "daily",
+    "news_language": "zh",
+    "time_range": "day",
+    "include_summary": true,
+    "include_source": true,
+    "include_date": true
+  },
+  "deployment": {
+    "platform": "github_pages",
+    "auto_deploy": true,
+    "commit_message": "Auto-update: {date}"
+  }
+}

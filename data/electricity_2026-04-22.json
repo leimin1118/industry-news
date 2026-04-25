@@ -1,0 +1,101 @@
+{
+  "industry_id": "electricity",
+  "industry_name": "电力能源",
+  "industry_name_en": "Electric Power & Energy",
+  "color": "#2196F3",
+  "icon": "⚡",
+  "collected_at": "2026-04-22T00:04:29.315695",
+  "news_count": 10,
+  "news_items": [
+    {
+      "title": "国家电网推进智能电网建设",
+      "summary": "这是关于国家电网推进智能电网建设的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news0",
+      "source": "北极星电力网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "新能源装机容量突破历史新高",
+      "summary": "这是关于新能源装机容量突破历史新高的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news1",
+      "source": "中国电力新闻网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力物联网技术取得重大突破",
+      "summary": "这是关于电力物联网技术取得重大突破的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news2",
+      "source": "能源界",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "储能产业发展迎来政策利好",
+      "summary": "这是关于储能产业发展迎来政策利好的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news3",
+      "source": "国际能源网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力市场化改革深入推进",
+      "summary": "这是关于电力市场化改革深入推进的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news4",
+      "source": "电力头条",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "清洁能源占比持续提升",
+      "summary": "这是关于清洁能源占比持续提升的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news5",
+      "source": "北极星电力网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力设备智能化升级加速",
+      "summary": "这是关于电力设备智能化升级加速的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news6",
+      "source": "中国电力新闻网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力行业数字化转型成效显著",
+      "summary": "这是关于电力行业数字化转型成效显著的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news7",
+      "source": "能源界",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力安全保障能力全面提升",
+      "summary": "这是关于电力安全保障能力全面提升的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news8",
+      "source": "国际能源网",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    },
+    {
+      "title": "电力科技创新成果丰硕",
+      "summary": "这是关于电力科技创新成果丰硕的最新行业动态，涉及电力能源领域的重要进展。",
+      "url": "https://example.com/电力能源/news9",
+      "source": "电力头条",
+      "published_date": "2026-04-22",
+      "language": "zh",
+      "is_mock_data": true
+    }
+  ]
+}
