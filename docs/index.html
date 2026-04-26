@@ -121,9 +121,9 @@
         .modal-box {
             background: #1a2a3a;
             border-radius: 16px;
-            width: 92%;
-            max-width: 680px;
-            max-height: 88vh;
+            width: 95%;
+            max-width: 900px;
+            max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 25px 80px rgba(0,0,0,0.5);
             animation: slideUp 0.3s ease;
@@ -168,29 +168,97 @@
         .modal-body { padding: 20px 25px 25px; }
 
         /* 基本信息网格 */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 25px;
+        /* ===== 基本信息行（压缩） ===== */
+        .info-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            padding: 8px 0 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 16px;
         }
-        .info-item {
-            background: rgba(255,255,255,0.04);
-            padding: 12px 14px;
-            border-radius: 8px;
-            border-left: 3px solid #4fc3f7;
+        .info-bar .info-tag {
+            font-size: 0.78rem;
+            color: #aaa;
         }
-        .info-item .lbl { font-size: 0.75rem; color: #7f8c8d; margin-bottom: 3px; }
-        .info-item .val { font-size: 0.95rem; font-weight: 600; color: #e0e0e0; }
+        .info-bar .info-tag strong {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        .info-bar .info-tag i {
+            color: #4fc3f7;
+            width: 14px;
+            margin-right: 3px;
+        }
 
         /* 新闻区块标题 */
-        .news-section-title {
-            font-size: 1rem;
-            color: #4fc3f7;
-            margin: 20px 0 12px;
-            display: flex; align-items: center; gap: 8px;
+        /* ===== 行业分类标签 ===== */
+        .industry-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
         }
-        .news-section-title i { font-size: 0.9rem; }
+        .industry-tab {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            opacity: 0.6;
+        }
+        .industry-tab:hover { opacity: 1; }
+        .industry-tab.active {
+            opacity: 1;
+            box-shadow: 0 0 10px rgba(79,195,247,0.3);
+        }
+        .industry-tab-ai { background: rgba(76,175,80,0.2); color: #81c784; border-color: rgba(76,175,80,0.4); }
+        .industry-tab-ai.active { background: rgba(76,175,80,0.35); border-color: #4CAF50; }
+        .industry-tab-electricity { background: rgba(255,193,7,0.2); color: #ffd54f; border-color: rgba(255,193,7,0.4); }
+        .industry-tab-electricity.active { background: rgba(255,193,7,0.35); border-color: #FFC107; }
+        .industry-tab-ecommerce { background: rgba(33,150,243,0.2); color: #64b5f6; border-color: rgba(33,150,243,0.4); }
+        .industry-tab-ecommerce.active { background: rgba(33,150,243,0.35); border-color: #2196F3; }
+
+        .news-section {
+            display: none;
+        }
+        .news-section.active {
+            display: block;
+        }
+
+        .industry-news-list { display: flex; flex-direction: column; gap: 10px; }
+        .industry-news-item {
+            background: rgba(255,255,255,0.03);
+            padding: 12px 14px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .industry-news-item:hover { background: rgba(255,255,255,0.06); }
+        .industry-news-item .news-title {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .industry-news-item .news-title:hover { color: #4fc3f7; }
+        .industry-news-item .news-summary {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        .industry-news-item .news-source {
+            font-size: 0.72rem;
+            color: #666;
+        }
+        .industry-news-empty {
+            text-align: center; padding: 30px 0; color: #555;
+        }
+        .industry-news-empty i { font-size: 1.5rem; display: block; margin-bottom: 8px; }
 
         /* 新闻列表 */
         .country-news-list { display: flex; flex-direction: column; gap: 10px; }
@@ -225,7 +293,7 @@
         .modal-error { text-align: center; padding: 40px; color: #e74c3c; }
 
         @media (max-width: 600px) {
-            .info-grid { grid-template-columns: 1fr; }
+            .info-bar { gap: 4px 12px; }
             .hero h1 { font-size: 1.5rem; }
             .modal-head h2 { font-size: 1.2rem; }
         }
@@ -443,7 +511,41 @@ async function getCountryDetails(code) {
 }
 
 // ============================
-// 5. 显示国家信息 + 新闻
+// 5. 三大行业分类新闻数据
+// ============================
+const industryNews = {
+    ai: [
+        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。即日起向Plus/Pro/企业用户推送。', source: 'The Verge / VentureBeat' },
+        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: '可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，支持长时间自主运行与持久记忆。', source: 'VentureBeat' },
+        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google先投100亿，达标后追加至400亿。Amazon已投80亿并承诺可追加200亿。', source: 'Bloomberg / The Verge' },
+        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案，完全断网运行，适合金融、医疗、国防行业。', source: 'VentureBeat' },
+        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes路线，AWS通过Bedrock优化执行速度。', source: 'VentureBeat' },
+        { title: 'DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法', summary: '司法部认为该法违反宪法平等保护条款，原定6月30日生效。', source: 'Bloomberg / The Verge' },
+        { title: '加拿大校园枪击案引发 AI 安全监管争议', summary: '嫌犯多次向ChatGPT描述枪支暴力引发审核警报，最终酿成9死27伤。', source: 'The Verge' },
+        { title: 'AI 免费时代宣告终结', summary: '多家AI公司从获客烧钱转向变现盈利，OpenAI砍掉非核心项目。', source: 'The Verge' },
+    ],
+    electricity: [
+        { title: '国家电网推进智能电网建设', summary: '国家电网发布智能电网建设规划，全面提升电力系统数字化智能化水平。', source: '中国电力报' },
+        { title: '新能源装机容量突破历史新高', summary: '我国新能源装机容量突破15亿千瓦，风电光伏占比持续提升。', source: '国家能源局' },
+        { title: '电力物联网技术取得重大突破', summary: '基于AI的电力物联网调度系统在多个省份试点成功。', source: '科技日报' },
+    ],
+    ecommerce: [
+        { title: '电商平台618大促即将开启', summary: '各平台备战618，AI导购和智能推荐成今年重点方向。', source: '亿邦动力' },
+        { title: '直播带货新规正式实施', summary: '国家市场监管总局发布直播带货管理新规，规范行业秩序。', source: '新华网' },
+        { title: '跨境电商迎来政策红利', summary: '新一批跨境电商综试区获批，税收优惠政策延续。', source: '商务部' },
+    ],
+};
+
+const industryNames = {
+    ai: { name: '人工智能', icon: '🤖', color: '#4CAF50' },
+    electricity: { name: '电力能源', icon: '⚡', color: '#FFC107' },
+    ecommerce: { name: '电子商务', icon: '🛒', color: '#2196F3' },
+};
+
+const industryTabs = ['ai', 'electricity', 'ecommerce'];
+
+// ============================
+// 6. 显示国家信息 + 新闻（三大行业分类）
 // ============================
 async function showCountryInfo(name, code) {
     openModal();
@@ -456,74 +558,76 @@ async function showCountryInfo(name, code) {
     bodyEl.innerHTML = `<div class="modal-loading"><i class="fas fa-spinner"></i><p>加载中...</p></div>`;
 
     try {
-        const [d] = await Promise.all([getCountryDetails(code)]);
+        const d = await getCountryDetails(code);
         const color = continentColors[d.continent] || '#4fc3f7';
         titleEl.innerHTML = `<span>${d.flagEmoji} ${d.nameCommon}</span>`;
         subEl.textContent = `${d.nameOfficial} · ${d.region}${d.subregion?' · '+d.subregion:''}`;
 
-        // 获取该国家新闻
-        const news = getNewsForCountry(d.nameCommon);
-        const newsHtml = news.length > 0
-            ? news.slice(0, 10).map(n => `
-                <div class="country-news-item">
-                    <a href="#">${n.title}</a>
-                    <p style="font-size:0.8rem;color:#7f8c8d;margin-bottom:3px;">${n.summary}</p>
-                    <div class="meta"><span><i class="fas fa-newspaper"></i> ${n.source}</span></div>
-                </div>
-            `).join('')
-            : `<div class="country-news-empty">暂无相关行业新闻</div>`;
+        // 压缩的基本信息行
+        const infoBar = `
+            <div class="info-bar">
+                <span class="info-tag"><i class="fas fa-city"></i><strong>${d.capital}</strong></span>
+                <span class="info-tag"><i class="fas fa-users"></i><strong>${d.population}</strong></span>
+                <span class="info-tag"><i class="fas fa-globe-asia"></i><strong>${d.area}</strong></span>
+                <span class="info-tag"><i class="fas fa-globe"></i><strong>${d.continent}</strong></span>
+                <span class="info-tag"><i class="fas fa-language"></i><strong>${d.languages}</strong></span>
+                <span class="info-tag"><i class="fas fa-money-bill-wave"></i><strong>${d.currencies}</strong></span>
+                <span class="info-tag"><i class="fas fa-clock"></i><strong>${d.timezones}</strong></span>
+                <span class="info-tag"><i class="fas fa-road"></i><strong>${d.drivingSide}</strong></span>
+            </div>
+        `;
+
+        // 行业分类选项卡 + 新闻区
+        let tabsHtml = '<div class="industry-tabs">';
+        let sectionsHtml = '';
+
+        industryTabs.forEach((tabId, idx) => {
+            const info = industryNames[tabId];
+            const items = industryNews[tabId] || [];
+            const active = idx === 0 ? ' active' : '';
+            tabsHtml += `<div class="industry-tab industry-tab-${tabId}${active}" onclick="switchIndustryTab('${tabId}')">${info.icon} ${info.name} (${items.length})</div>`;
+
+            const activeSection = idx === 0 ? ' active' : '';
+            if (items.length > 0) {
+                sectionsHtml += `<div class="news-section${activeSection}" id="section-${tabId}">
+                    <div class="industry-news-list">
+                        ${items.map(n => `
+                            <div class="industry-news-item">
+                                <a href="#" class="news-title" onclick="event.preventDefault()">${n.title}</a>
+                                <div class="news-summary">${n.summary}</div>
+                                <div class="news-source"><i class="fas fa-newspaper"></i> ${n.source}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            } else {
+                sectionsHtml += `<div class="news-section${activeSection}" id="section-${tabId}">
+                    <div class="industry-news-empty"><i class="fas fa-inbox"></i><p>暂无${info.name}新闻</p></div>
+                </div>`;
+            }
+        });
+
+        tabsHtml += '</div>';
 
         bodyEl.innerHTML = `
-            <div class="info-grid">
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-city"></i> 首都</div>
-                    <div class="val">${d.capital}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-users"></i> 人口</div>
-                    <div class="val">${d.population}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-globe-asia"></i> 面积</div>
-                    <div class="val">${d.area}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-globe"></i> 大洲</div>
-                    <div class="val">${d.continent}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-language"></i> 语言</div>
-                    <div class="val">${d.languages}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-money-bill-wave"></i> 货币</div>
-                    <div class="val">${d.currencies}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-clock"></i> 时区</div>
-                    <div class="val">${d.timezones}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-flag"></i> 联合国成员</div>
-                    <div class="val">${d.unMember}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-road"></i> 行驶方向</div>
-                    <div class="val">${d.drivingSide}</div>
-                </div>
-                <div class="info-item" style="border-left-color:${color}">
-                    <div class="lbl"><i class="fas fa-border-all"></i> 邻国</div>
-                    <div class="val">${d.borders}</div>
-                </div>
-            </div>
-            ${d.googleMap ? `<div style="margin-bottom:18px;"><a href="${d.googleMap}" target="_blank" style="color:#4fc3f7;font-size:0.85rem;text-decoration:none;"><i class="fas fa-map-marked-alt"></i> Google 地图</a></div>` : ''}
-
-            <div class="news-section-title"><i class="fas fa-newspaper"></i> 最新行业新闻</div>
-            <div class="country-news-list">${newsHtml}</div>
+            ${infoBar}
+            ${tabsHtml}
+            ${sectionsHtml}
         `;
     } catch(e) {
         bodyEl.innerHTML = `<div class="modal-error"><i class="fas fa-exclamation-circle" style="font-size:2rem;margin-bottom:12px;display:block;"></i><p>无法获取 ${name} 的信息</p></div>`;
+        console.error(e);
     }
+}
+
+// ============================
+// 6.5 切换行业分类选项卡
+// ============================
+function switchIndustryTab(tabId) {
+    document.querySelectorAll('.industry-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.news-section').forEach(s => s.classList.remove('active'));
+    document.querySelector(`.industry-tab-${tabId}`).classList.add('active');
+    document.getElementById(`section-${tabId}`).classList.add('active');
 }
 
 // ============================
