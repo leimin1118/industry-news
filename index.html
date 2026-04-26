@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>行业信息聚合平台</title>
-    <meta name="description" content="世界地图 + AI行业新闻聚合 | 更新：2026-04-25 | 更新：2026-04-25">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="description" content="世界地图 + AI/电力/电商行业新闻 | 更新：2026-04-26">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -96,6 +95,25 @@
         }
         #worldmap path:hover { opacity: 0.8; stroke: #4fc3f7; stroke-width: 1.2; }
 
+        .top10-bar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+        .top10-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 16px; border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #ccc; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .top10-btn:hover {
+            background: rgba(79,195,247,0.15);
+            border-color: #4fc3f7; color: #fff;
+            transform: translateY(-1px);
+        }
+        .top10-btn .badge {
+            background: #4fc3f7; color: #0f1923;
+            border-radius: 10px; padding: 1px 7px;
+            font-size: 0.7rem; font-weight: 600;
+        }
         .loading-map {
             text-align: center;
             padding: 80px 0;
@@ -353,6 +371,8 @@
     </section>
 
     <section class="map-wrap">
+        <!-- Top10 快捷国家入口（优先加载，无需地图） -->
+        <div id="top10Bar"></div>
         <div id="loading" class="loading-map">
             <i class="fas fa-globe-asia"></i>
             <p>加载世界地图...</p>
@@ -377,8 +397,8 @@
 
 <script src="country_data.js"></script>
 <script src="map_data.js"></script>
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<script src="https://d3js.org/topojson.v3.min.js"></script>
+<script src="https://d3js.org/d3.v7.min.js" defer></script>
+<script src="https://d3js.org/topojson.v3.min.js" defer></script>
 <script>
 // ============================
 // 1. 新闻数据（按国家归类）
@@ -750,7 +770,76 @@ async function initMap() {
         document.getElementById('loading').innerHTML = `<i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i><p style="color:#e74c3c;">地图加载失败</p>`;
     }
 }
-document.addEventListener('DOMContentLoaded', initMap);
+// ============================
+// 7. Top10 国家快捷入口（立即渲染，无需外部依赖）
+// ============================
+const top10Names = ['中国','美国','日本','韩国','德国','英国','法国','新加坡','印度','澳大利亚'];
+const top10NewsCount = top10Names.map(n => {
+    const news = countryNews[n];
+    if (!news) return 0;
+    // count all three categories
+    let c = 0;
+    for (const k of ['ai','electricity','ecommerce']) {
+        if (industryNews[k]) {
+            c += industryNews[k].filter(item => news.some(nn => item.title.includes(nn.title.slice(0,5)))).length || 0;
+        }
+    }
+    return news.length || c || 0;
+});
+const countryCodeMap = {};
+for (const [name, code] of Object.entries(countryMap)) {
+    countryCodeMap[name] = code;
+}
+(function renderTop10() {
+    const bar = document.getElementById('top10Bar');
+    if (!bar || bar.innerHTML) return;
+    // Hardcoded ISO codes for Top10 (pre-populated for instant info display)
+    const top10Codes = {'中国':'156','美国':'840','日本':'392','韩国':'410','德国':'276','英国':'826','法国':'250','新加坡':'702','印度':'356','澳大利亚':'036'};
+    bar.innerHTML = '<div style="text-align:center;margin-bottom:4px;color:#888;font-size:0.72rem;">快捷国家</div><div class="top10-bar">' +
+        top10Names.map((n, i) => {
+            const code = top10Codes[n] || '';
+            const cnt = getNewsForCountry(n)?.[0] ? (getNewsForCountry(n).length + ' 条') : '';
+            return '<button class="top10-btn" onclick="showCountryInfo(\'' + n + '\',\'' + code + '\')">' + 
+                '<span>' + n + '</span>' +
+                (cnt ? '<span class="badge">' + cnt + '</span>' : '') +
+                '</button>';
+        }).join('') + '</div>';
+})();
+
+// ============================
+// 8. 延迟加载地图（不阻塞首屏）
+// ============================
+// 先等 d3/topojson 加载完毕
+function loadD3Libs(callback) {
+    if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
+        callback();
+        return;
+    }
+    // 等待defer脚本加载
+    const check = () => {
+        if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
+            callback();
+        } else {
+            setTimeout(check, 200);
+        }
+    };
+    setTimeout(check, 500);
+}
+// 延迟1.5秒后开始加载d3
+setTimeout(() => {
+    loadD3Libs(() => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('worldmap').style.display = 'block';
+        initMap();
+    });
+}, 1500);
+// 5秒超时降级：如果d3还没加载好，隐藏loading显示提示
+setTimeout(() => {
+    const loading = document.getElementById('loading');
+    if (loading && loading.style.display !== 'none') {
+        loading.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i><p>地图加载超时…</p><p style="font-size:0.75rem;color:#888;">你仍可以点击上方国家按钮查看新闻</p>';
+    }
+}, 5000);
 </script>
 </body>
 </html>
