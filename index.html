@@ -260,6 +260,38 @@
         }
         .industry-news-empty i { font-size: 1.5rem; display: block; margin-bottom: 8px; }
 
+        /* ===== 新闻展开/收缩 ===== */
+        .news-header {
+            cursor: pointer;
+        }
+        .toggle-icon {
+            float: right;
+            color: #555;
+            font-size: 0.72rem;
+            margin-left: 8px;
+            transition: transform 0.2s;
+        }
+        .news-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        .news-detail.open {
+            max-height: 300px;
+            opacity: 1;
+            padding-top: 8px;
+        }
+        .news-detail-text {
+            font-size: 0.82rem;
+            color: #aaa;
+            line-height: 1.55;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            border-left: 3px solid #4fc3f7;
+        }
+
         /* 新闻列表 */
         .country-news-list { display: flex; flex-direction: column; gap: 10px; }
         .country-news-item {
@@ -515,24 +547,24 @@ async function getCountryDetails(code) {
 // ============================
 const industryNews = {
     ai: [
-        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。即日起向Plus/Pro/企业用户推送。', source: 'The Verge / VentureBeat' },
-        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: '可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，支持长时间自主运行与持久记忆。', source: 'VentureBeat' },
-        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google先投100亿，达标后追加至400亿。Amazon已投80亿并承诺可追加200亿。', source: 'Bloomberg / The Verge' },
-        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案，完全断网运行，适合金融、医疗、国防行业。', source: 'VentureBeat' },
-        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes路线，AWS通过Bedrock优化执行速度。', source: 'VentureBeat' },
-        { title: 'DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法', summary: '司法部认为该法违反宪法平等保护条款，原定6月30日生效。', source: 'Bloomberg / The Verge' },
-        { title: '加拿大校园枪击案引发 AI 安全监管争议', summary: '嫌犯多次向ChatGPT描述枪支暴力引发审核警报，最终酿成9死27伤。', source: 'The Verge' },
-        { title: 'AI 免费时代宣告终结', summary: '多家AI公司从获客烧钱转向变现盈利，OpenAI砍掉非核心项目。', source: 'The Verge' },
+        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'GPT-5.5在编码调试、在线研究方面表现突出，使用更少token即可完成任务。', source: 'The Verge / VentureBeat', detail: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。在编码调试、在线研究、跨工具工作等任务上表现突出，使用更少的token即可完成任务。即日起向Plus/Pro/企业用户推送。此次升级重点提升了代码理解和生成能力，开发者体验大幅改善。' },
+        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: 'Workspace Agents可嵌入Slack、Google Drive、Salesforce等企业应用，5月6日前免费。', source: 'VentureBeat', detail: '作为Custom GPT的继任者，Workspace Agents可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，基于Codex引擎驱动，支持长时间自主运行、跨应用协作与持久记忆。5月6日前免费体验。OpenAI此举意在抢占企业AI代理市场。' },
+        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google追加投资至400亿美元，Amazon已投80亿，AI军备竞赛白热化。', source: 'Bloomberg / The Verge', detail: 'Google先投100亿美元，达标后追加至400亿美元。此前Amazon已投80亿，本周再投50亿并承诺未来可追加200亿。科技巨头在AI领域的军备竞赛已全面白热化，Anthropic成为最大赢家之一。' },
+        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案，Dell硬件+8块NVIDIA GPU完全断网运行。', source: 'VentureBeat', detail: 'Cirrascale推出Gemini本地部署方案：Dell硬件+8块NVIDIA GPU，完全断网运行。数据不经过Google基础设施，适合金融、医疗、国防等高度监管行业。这标志着大模型私有化部署进入商业化阶段。' },
+        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes治理路线，AWS专注执行速度优化，编排vs执行。', source: 'VentureBeat', detail: 'Google走Kubernetes控制面板路线，注重治理和安全；AWS通过Bedrock AgentCore优化执行速度，让代理快速上线。两大云厂商的AI代理路线清晰分化：一个管编排，一个管执行，企业需按需选择。' },
+        { title: 'DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法', summary: '司法部认为该法违反宪法平等保护条款，原定6月30日生效。', source: 'Bloomberg / The Verge', detail: '美国司法部加入xAI的诉讼，起诉科罗拉多州的AI反歧视法。司法部认为该法要求开发者采取合理注意防止算法歧视违反宪法平等保护条款。该法原定6月30日生效，正在被挑战。' },
+        { title: '加拿大校园枪击案引发 AI 安全监管争议', summary: '嫌犯多次向ChatGPT描述枪支暴力触发审核警报但未阻止，最终9死27伤。', source: 'The Verge', detail: '加拿大校园枪击案嫌犯数月前多次向ChatGPT描述枪支暴力引发审核警报，但OpenAI评估后认为非即时可信威胁，仅封号处理。最终酿成9死27伤的悲剧，引发对AI安全监管的激烈争议。' },
+        { title: 'AI 免费时代宣告终结', summary: '多家AI公司从获客转向变现，OpenAI砍掉非核心项目全力追逐营收。', source: 'The Verge', detail: '广告加载、速率限制、订阅涨价……多家AI公司开始从获客烧钱转向变现盈利。OpenAI砍掉非核心项目，全力追逐更强劲的营收引擎。AI免费午餐时代正式宣告结束，用户需为更优质的服务付费。' },
     ],
     electricity: [
-        { title: '国家电网推进智能电网建设', summary: '国家电网发布智能电网建设规划，全面提升电力系统数字化智能化水平。', source: '中国电力报' },
-        { title: '新能源装机容量突破历史新高', summary: '我国新能源装机容量突破15亿千瓦，风电光伏占比持续提升。', source: '国家能源局' },
-        { title: '电力物联网技术取得重大突破', summary: '基于AI的电力物联网调度系统在多个省份试点成功。', source: '科技日报' },
+        { title: '国家电网推进智能电网建设', summary: '国家电网发布智能电网建设规划，全面提升电力系统数字化水平。', source: '中国电力报', detail: '国家电网发布智能电网建设规划，以数字化、智能化为核心方向，推动电力系统全面升级。计划在未来三年内投资超千亿元，覆盖全国主要电网节点，提升电网调度效率和可再生能源消纳能力。' },
+        { title: '新能源装机容量突破历史新高', summary: '新能源装机容量突破15亿千瓦，风电光伏占比持续提升。', source: '国家能源局', detail: '我国新能源装机容量突破15亿千瓦，风电和光伏占比持续提升。数据表明，新能源已成为我国新增电力装机的主力，预计到2030年非化石能源发电量占比将超过50%，能源转型步伐加快。' },
+        { title: '电力物联网技术取得重大突破', summary: '基于AI的电力物联网调度系统在多个省份试点成功。', source: '科技日报', detail: '基于AI技术的电力物联网调度系统在江苏、浙江等省份试点成功，实现了电网运行效率和故障响应速度的双提升。该系统可实时分析海量数据，自动优化配电网运行策略，显著减少停电时间。' },
     ],
     ecommerce: [
-        { title: '电商平台618大促即将开启', summary: '各平台备战618，AI导购和智能推荐成今年重点方向。', source: '亿邦动力' },
-        { title: '直播带货新规正式实施', summary: '国家市场监管总局发布直播带货管理新规，规范行业秩序。', source: '新华网' },
-        { title: '跨境电商迎来政策红利', summary: '新一批跨境电商综试区获批，税收优惠政策延续。', source: '商务部' },
+        { title: '电商平台618大促即将开启', summary: '各平台备战618，AI导购和智能推荐成重点方向。', source: '亿邦动力', detail: '各大电商平台积极备战618年中大促，AI导购和智能推荐成为今年竞争重点。淘宝、京东、拼多多纷纷推出AI购物助手，通过个性化推荐和自然语言交互提升用户体验，预计今年618销售额将再创新高。' },
+        { title: '直播带货新规正式实施', summary: '市场监管总局发布直播带货新规，规范行业秩序。', source: '新华网', detail: '国家市场监管总局正式实施直播带货管理新规，对主播资质、商品质量、售后责任做出明确规定。新规要求直播平台建立主播信用评价体系，对虚假宣传和售假行为加大处罚力度，促进行业健康发展。' },
+        { title: '跨境电商迎来政策红利', summary: '新一批跨境电商综试区获批，税收优惠政策延续。', source: '商务部', detail: '国务院新一批跨境电商综合试验区获批，新增15个城市纳入试点范围。同时，跨境电商零售出口税收优惠政策延续至2027年，为出口企业降低经营成本。政策红利释放有望推动跨境电商规模再上新台阶。' },
     ],
 };
 
@@ -591,13 +623,18 @@ async function showCountryInfo(name, code) {
             if (items.length > 0) {
                 sectionsHtml += `<div class="news-section${activeSection}" id="section-${tabId}">
                     <div class="industry-news-list">
-                        ${items.map(n => `
+                        ${items.map((n, idx) => `
                             <div class="industry-news-item">
-                                <a href="#" class="news-title" onclick="event.preventDefault()">${n.title}</a>
-                                <div class="news-summary">${n.summary}</div>
-                                <div class="news-source"><i class="fas fa-newspaper"></i> ${n.source}</div>
+                                <div class="news-header" onclick="toggleNewsDetail(event, '${tabId}-${idx}')">
+                                    <a href="#" class="news-title" onclick="event.preventDefault()">${n.title}</a>
+                                    <div class="news-summary">${n.summary}</div>
+                                    <div class="news-source"><i class="fas fa-newspaper"></i> ${n.source} <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span></div>
+                                </div>
+                                <div class="news-detail" id="detail-${tabId}-${idx}">
+                                    <div class="news-detail-text">${n.detail || n.summary}</div>
+                                </div>
                             </div>
-                        `).join('')}
+                        `).join('')
                     </div>
                 </div>`;
             } else {
@@ -622,6 +659,30 @@ async function showCountryInfo(name, code) {
 
 // ============================
 // 6.5 切换行业分类选项卡
+function toggleNewsDetail(e, id) {
+    e.preventDefault();
+    const detail = document.getElementById('detail-' + id);
+    if (!detail) return;
+    const isOpen = detail.classList.contains('open');
+    // 关闭同一分类下其他展开项
+    const parent = detail.closest('.news-section');
+    if (parent) {
+        parent.querySelectorAll('.news-detail.open').forEach(d => {
+            if (d.id !== 'detail-' + id) {
+                d.classList.remove('open');
+                const icon = d.closest('.industry-news-item')?.querySelector('.toggle-icon i');
+                if (icon) icon.className = 'fas fa-chevron-down';
+            }
+        });
+    }
+    if (isOpen) {
+        detail.classList.remove('open');
+        e.currentTarget.querySelector('.toggle-icon i').className = 'fas fa-chevron-down';
+    } else {
+        detail.classList.add('open');
+        e.currentTarget.querySelector('.toggle-icon i').className = 'fas fa-chevron-up';
+    }
+}
 // ============================
 function switchIndustryTab(tabId) {
     document.querySelectorAll('.industry-tab').forEach(t => t.classList.remove('active'));
