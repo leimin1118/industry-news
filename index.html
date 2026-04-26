@@ -635,27 +635,27 @@ async function showCountryInfo(name, code) {
 
             const activeSection = idx === 0 ? ' active' : '';
             if (items.length > 0) {
-                sectionsHtml += `<div class="news-section${activeSection}" id="section-${tabId}">
-                    <div class="industry-news-list">
-                        ${items.map((n, idx) => `
-                            <div class="industry-news-item">
-                                <div class="news-header" onclick="toggleNewsDetail(event, '${tabId}-${idx}')">
-                                    <a href="#" class="news-title" onclick="event.preventDefault()">${n.title}</a>
-                                    <div class="news-summary">${n.summary}</div>
-                                    <div class="news-source"><i class="fas fa-newspaper"></i> ${n.source} <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span></div>
-                                </div>
-                                <div class="news-detail" id="detail-${tabId}-${idx}">
-                                    <div class="news-detail-text">${n.detail || n.summary}</div>
-                                </div>
-                            </div>
-                        `).join('')
-                    </div>
-                </div>`;
+                sectionsHtml += '<div class="news-section' + activeSection + '" id="section-' + tabId + '">' +
+                    '<div class="industry-news-list">' +
+                    items.map((n, idx) => {
+                        return '<div class="industry-news-item">' +
+                            '<div class="news-header" onclick="toggleNewsDetail(event,' + "'" + tabId + '-' + idx + "'" + ')">' +
+                            '<a href="#" class="news-title" onclick="event.preventDefault()">' + n.title + '</a>' +
+                            '<div class="news-summary">' + n.summary + '</div>' +
+                            '<div class="news-source"><i class="fas fa-newspaper"></i> ' + n.source + ' <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span></div>' +
+                            '</div>' +
+                            '<div class="news-detail" id="detail-' + tabId + '-' + idx + '">' +
+                            '<div class="news-detail-text">' + (n.detail || n.summary) + '</div>' +
+                            '</div>' +
+                            '</div>';
+                    }).join('') +
+                    '</div>' +
+                    '</div>';
             } else {
-                sectionsHtml += `<div class="news-section${activeSection}" id="section-${tabId}">
-                    <div class="industry-news-empty"><i class="fas fa-inbox"></i><p>暂无${info.name}新闻</p></div>
-                </div>`;
-            }
+                sectionsHtml += '<div class="news-section' + activeSection + '" id="section-' + tabId + '">' +
+                    '<div class="industry-news-empty"><i class="fas fa-inbox"></i><p>暂无' + info.name + '新闻</p></div>' +
+                    '</div>';
+        }
         });
 
         tabsHtml += '</div>';
