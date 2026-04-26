@@ -66,6 +66,20 @@ def main():
             logger.error("网站生成失败")
             return 1
         
+        # 2.5 更新世界地图版首页的新闻数据
+        logger.info("\n🗺️  步骤2.5: 更新世界地图首页动态数据")
+        logger.info("-" * 40)
+        
+        try:
+            from update_worldmap_data import update_html
+            if news_data:
+                update_html(news_data)
+                logger.info("世界地图首页数据已同步！")
+            else:
+                logger.warning("没有新闻数据可同步到世界地图")
+        except Exception as e:
+            logger.warning(f"世界地图首页更新跳过: {e}")
+        
         # 3. 输出统计信息
         logger.info("\n📊 步骤3: 生成统计报告")
         logger.info("-" * 40)

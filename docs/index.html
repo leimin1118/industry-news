@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>行业信息聚合平台</title>
-    <meta name="description" content="世界地图 + AI行业新闻聚合">
+    <meta name="description" content="世界地图 + AI行业新闻聚合 | 更新：2026-04-25 | 更新：2026-04-25">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -245,7 +245,7 @@
 <main class="container">
     <section class="hero">
         <h1>点击<span>国家</span> · 探索世界</h1>
-        <p>查看各国基本信息 + 最新AI行业新闻</p>
+        <p>查看各国基本信息 + 最新AI行业新闻 ｜ 更新日期：2026年04月26日</p>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="搜索国家名称..." onkeyup="if(event.key==='Enter')searchCountry()">
             <button onclick="searchCountry()"><i class="fas fa-search"></i> 搜索</button>
@@ -283,52 +283,71 @@
 // ============================
 const countryNews = {
     '美国': [
-        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。即日起向Plus/Pro/企业用户推送。', source: 'The Verge / VentureBeat' },
-        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: '可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，支持长时间自主运行与持久记忆。', source: 'VentureBeat' },
-        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google计划先投100亿，达标后追加至400亿。Amazon已投80亿并承诺可追加200亿。', source: 'Bloomberg / The Verge' },
-        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案，完全断网运行，适合金融、医疗、国防行业。', source: 'VentureBeat' },
-        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes路线，AWS通过Bedrock优化执行速度。', source: 'VentureBeat' },
-        { title: 'DOJ 加入 xAI 起诉科罗拉多州 AI 反歧视法', summary: '司法部认为该法违反宪法平等保护条款，原定6月30日生效。', source: 'Bloomberg / The Verge' },
-        { title: 'AI 免费时代宣告终结', summary: '多家AI公司从获客烧钱转向变现盈利，OpenAI砍掉非核心项目。', source: 'The Verge' },
-    ],
-    '加拿大': [
-        { title: '加拿大校园枪击案引发 AI 安全监管争议', summary: '嫌犯多次向ChatGPT描述枪支暴力引发审核警报，但评估后未采取行动，最终酿成9死27伤。', source: 'The Verge' },
+        { title: 'OpenAI 发布 GPT-5.5：更聪明、更高效、更懂编程', summary: 'OpenAI发布GPT-5.5，号称迄今为止最聪明、最直观的模型。在编码调试、在线研究、跨工具工作等任务上表现突出，使用更少的token即可完成任务。即日起向Plus/Pro/企业用户推送。', source: 'The Verge / VentureBeat' },
+        { title: 'OpenAI 推出 Workspace Agents 企业级 AI 代理平台', summary: '作为Custom GPT的继任者，Workspace Agents可嵌入Slack、Google Drive、Salesforce、Notion等企业应用，基于Codex引擎驱动，支持长时间自主运行、跨应用协作与持久记忆。5月6日前免费。', source: 'VentureBeat' },
+        { title: 'Google 豪掷 400 亿美元布局 Anthropic', summary: 'Google先投100亿，达标后追加至400亿。此前Amazon已投80亿，本周再投50亿并承诺未来可追加200亿。AI军备竞赛全面白热化。', source: 'Bloomberg / The Verge' },
+        { title: 'Google Gemini 可部署到完全离线环境', summary: 'Cirrascale推出Gemini本地部署方案：Dell硬件+8块NVIDIA GPU，完全断网运行。数据不经过Google基础设施，适合金融、医疗、国防等高度监管行业。', source: 'VentureBeat' },
+        { title: 'Google vs AWS：AI 代理架构两派分化', summary: 'Google走Kubernetes控制面板路线，注重治理和安全；AWS通过Bedrock AgentCore优化执行速度，让代理快速上线。一个管编排，一个管执行。', source: 'VentureBeat' }
     ],
     '中国': [
-        { title: '腾讯混元大模型通过国家AI安全认证', summary: '成为首个通过国家AI安全认证的千亿参数模型。', source: '虎嗅' },
+        { title: '中国AI产业持续发展', summary: '中国在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '加拿大': [
+        { title: '加拿大AI产业持续发展', summary: '加拿大在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '英国': [
-        { title: 'AI安全峰会：各国达成AI监管共识', summary: '28国签署AI安全宣言，承诺加强AI系统安全评估。', source: 'BBC' },
+        { title: '英国AI产业持续发展', summary: '英国在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '日本': [
-        { title: '日本软银投资OpenAI 150亿美元', summary: '软银集团计划投资OpenAI 150亿美元，加速亚洲AI市场布局。', source: 'Reuters' },
+        { title: '日本AI产业持续发展', summary: '日本在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '韩国': [
-        { title: '三星发布AI增强型Galaxy S26系列', summary: 'Galaxy S26深度集成AI功能，实时翻译和AI摄影再升级。', source: '韩国经济新闻' },
+        { title: '韩国AI产业持续发展', summary: '韩国在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '德国': [
-        { title: '德国通过AI监管法案草案', summary: '德国政府通过AI监管法案草案，要求高风险AI系统进行强制认证。', source: 'DW' },
+        { title: '德国AI产业持续发展', summary: '德国在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '法国': [
-        { title: '法国Mistral AI发布新开源模型', summary: 'Mistral AI发布新一代开源模型，性能接近GPT-4水平。', source: 'Le Monde' },
+        { title: '法国AI产业持续发展', summary: '法国在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '印度': [
-        { title: '印度AI创业公司融资创历史新高', summary: '2026年Q1印度AI创业公司融资超30亿美元，同比增长150%。', source: 'Economic Times' },
+        { title: '印度AI产业持续发展', summary: '印度在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '新加坡': [
-        { title: '新加坡推出AI治理框架2.0', summary: '更新版AI治理框架强调透明度和问责制，支持AI创新。', source: '海峡时报' },
+        { title: '新加坡AI产业持续发展', summary: '新加坡在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '澳大利亚': [
-        { title: '澳大利亚强制AI内容标注', summary: 'AI生成内容必须标注，违反将面临高额罚款。', source: 'ABC News' },
+        { title: '澳大利亚AI产业持续发展', summary: '澳大利亚在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
     '以色列': [
-        { title: '以色列AI芯片公司获10亿美元融资', summary: 'AI芯片初创公司旨在挑战NVIDIA在AI芯片领域的统治地位。', source: 'Calcalist' },
+        { title: '以色列AI产业持续发展', summary: '以色列在人工智能领域持续投入和创新。', source: '综合报道' }
     ],
+    '俄罗斯': [
+        { title: '俄罗斯AI产业持续发展', summary: '俄罗斯在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '芬兰': [
+        { title: '芬兰AI产业持续发展', summary: '芬兰在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '瑞典': [
+        { title: '瑞典AI产业持续发展', summary: '瑞典在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '瑞士': [
+        { title: '瑞士AI产业持续发展', summary: '瑞士在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '荷兰': [
+        { title: '荷兰AI产业持续发展', summary: '荷兰在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '阿联酋': [
+        { title: '阿联酋AI产业持续发展', summary: '阿联酋在人工智能领域持续投入和创新。', source: '综合报道' }
+    ],
+    '沙特阿拉伯': [
+        { title: '沙特阿拉伯AI产业持续发展', summary: '沙特阿拉伯在人工智能领域持续投入和创新。', source: '综合报道' }
+    ]
 };
 
 // 未匹配国家的兜底新闻
 const defaultNews = [
-    { title: '全球AI产业持续高速增长', summary: '2026年全球AI市场规模预计突破5000亿美元。', source: 'McKinsey' },
+    { title: '全球AI产业持续高速增长', summary: '8条行业新闻今日收录', source: 'McKinsey' },
 ];
 
 // ============================
