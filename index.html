@@ -397,8 +397,8 @@
 
 <script src="country_data.js"></script>
 <script src="map_data.js"></script>
-<script src="https://d3js.org/d3.v7.min.js" defer></script>
-<script src="https://d3js.org/topojson.v3.min.js" defer></script>
+<script src="d3.min.js"></script>
+<script src="topojson.min.js"></script>
 <script>
 // ============================
 // 1. 新闻数据（按国家归类）
@@ -807,39 +807,16 @@ for (const [name, code] of Object.entries(countryMap)) {
 })();
 
 // ============================
-// 8. 延迟加载地图（不阻塞首屏）
+// 8. 初始化地图（所有库均本地内嵌，立即加载）
 // ============================
-// 先等 d3/topojson 加载完毕
-function loadD3Libs(callback) {
-    if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
-        callback();
-        return;
-    }
-    // 等待defer脚本加载
-    const check = () => {
-        if (typeof d3 !== 'undefined' && typeof topojson !== 'undefined') {
-            callback();
-        } else {
-            setTimeout(check, 200);
-        }
-    };
-    setTimeout(check, 500);
-}
-// 延迟1.5秒后开始加载d3
-setTimeout(() => {
-    loadD3Libs(() => {
+document.addEventListener('DOMContentLoaded', () => {
+    // 等待一个微小延迟让 Top10 先渲染
+    setTimeout(() => {
         document.getElementById('loading').style.display = 'none';
         document.getElementById('worldmap').style.display = 'block';
         initMap();
-    });
-}, 1500);
-// 5秒超时降级：如果d3还没加载好，隐藏loading显示提示
-setTimeout(() => {
-    const loading = document.getElementById('loading');
-    if (loading && loading.style.display !== 'none') {
-        loading.innerHTML = '<i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i><p>地图加载超时…</p><p style="font-size:0.75rem;color:#888;">你仍可以点击上方国家按钮查看新闻</p>';
-    }
-}, 5000);
+    }, 100);
+});
 </script>
 </body>
 </html>
