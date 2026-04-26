@@ -375,6 +375,8 @@
     </div>
 </div>
 
+<script src="country_data.js"></script>
+<script src="map_data.js"></script>
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://d3js.org/topojson.v3.min.js"></script>
 <script>
@@ -453,8 +455,8 @@ const defaultNews = [
 // ============================
 // 2. 地图配置
 // ============================
-const WORLD_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
-const REST_COUNTRIES_URL = 'https://restcountries.com/v3.1/alpha/';
+// 数据已内嵌（country_data.js, map_data.js）
+
 const continentColors = {
     'Asia': '#e74c3c', 'Africa': '#f39c12', 'Europe': '#3498db',
     'North America': '#2ecc71', 'South America': '#9b59b6',
@@ -516,31 +518,23 @@ function formatNumber(num) {
     return num.toLocaleString();
 }
 
-async function getCountryDetails(code) {
+function getCountryDetails(code) {
     if (countryCache[code]) return countryCache[code];
-    const resp = await fetch(REST_COUNTRIES_URL + code);
-    if (!resp.ok) throw new Error('API请求失败');
-    const data = await resp.json(); const c = data[0];
+    const c = countryInfo[code];
+    if (!c) {
+        const d = { nameCommon: '未知国家', nameOfficial: '', flagEmoji: '🌍', capital: '无', region: '未知', population: '未知', area: '未知', languages: '未知', currencies: '未知', timezones: '未知', continent: '未知', borders: '未知', drivingSide: '未知' };
+        countryCache[code] = d; return d;
+    }
     const d = {
-        nameCommon: c.name?.common || '未知',
-        nameOfficial: c.name?.official || '未知',
-        flagEmoji: c.flag || '🏳️',
-        capital: c.capital ? c.capital[0] : '无',
-        region: c.region || '未知',
-        subregion: c.subregion || '',
-        population: c.population ? formatNumber(c.population) : '未知',
-        area: c.area ? formatNumber(c.area) + ' km²' : '未知',
-        languages: c.languages ? Object.values(c.languages).join(', ') : '未知',
-        currencies: c.currencies ? Object.values(c.currencies).map(x => `${x.name}${x.symbol?' ('+x.symbol+')':''}`).join(', ') : '未知',
-        timezones: c.timezones ? c.timezones.slice(0,3).join(', ')+(c.timezones.length>3?'...':'') : '未知',
-        continent: c.region || '未知',
-        borders: c.borders ? c.borders.length+' 个邻国' : '无陆地接壤',
-        unMember: c.unMember ? '是' : '否',
-        drivingSide: c.car?.side==='right'?'靠右':c.car?.side==='left'?'靠左':c.car?.side||'未知',
-        googleMap: c.maps?.googleMaps || '',
+        nameCommon: c.name, nameOfficial: c.official, flagEmoji: c.flag,
+        capital: c.capital, region: c.region, population: c.pop,
+        area: c.area, languages: c.lang, currencies: c.currency,
+        timezones: c.tz, continent: c.region, borders: c.borders,
+        drivingSide: c.drive,
     };
     countryCache[code] = d; return d;
 }
+
 
 // ============================
 // 5. 三大行业分类新闻数据
@@ -718,8 +712,7 @@ function searchCountry() {
 // ============================
 async function initMap() {
     try {
-        const resp = await fetch(WORLD_URL);
-        const world = await resp.json();
+        const world = worldAtlasData;
         world.objects.countries.geometries.forEach(c => {
             if (c.properties?.name) countryMap[c.properties.name] = c.id;
         });
